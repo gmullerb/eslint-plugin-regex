@@ -1,0 +1,63 @@
+plugins {
+  id 'all.shared.gradle.project-style-checker' version '1.0.7'
+  id 'com.moowork.node' version '1.2.0'
+}
+
+repositories {
+  jcenter()
+}
+
+// Plugins settings
+///////////////////
+
+node {
+  version = NODE_VERSION
+  download = true
+}
+
+// TASKS
+////////
+
+task lint(type: NpmTask) {
+  // NpmTask task settings
+  args = [
+    'run',
+    'lint',
+    '--silent'
+  ]
+  // gradle task settings
+  group = 'Node'
+}
+
+task test(type: NpmTask) {
+  // NpmTask task settings
+  args = [
+    'run',
+    'test'
+  ]
+  // gradle task settings
+  group = 'Node'
+}
+
+task build(type: NpmTask) {
+  // NpmTask task settings
+  args = [
+    'pack',
+    '../'
+  ]
+  workingDir buildDir
+  // gradle task settings
+  group = 'Node'
+}
+
+task publish(type: NpmTask) {
+  // NpmTask task settings
+  args = ['publish']
+  // gradle task settings
+  group = 'Node'
+}
+
+// Default task
+///////////////
+
+defaultTasks 'assessCommon', 'assessGradle', 'npmInstall', 'lint', 'test', 'build'

@@ -1,0 +1,93 @@
+image: openjdk:11-jdk
+
+cache:
+  key: "${CI_COMMIT_SHA}"
+  untracked: true
+  paths:
+    - .gradle/
+    - node_modules/
+
+before_script:
+  - chmod +x ./gradlew
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+stages:
+  - inception
+  - assess
+  - test
+  - assemble
+
+create-cache:
+  stage: inception
+  script:
+    - ./gradlew -v
+    - ./gradlew npmInstall
+  cache:
+    key: "${CI_COMMIT_SHA}"
+    policy: push
+    untracked: true
+    paths:
+    - .gradle/
+    - node_modules/
+
+common-assess:
+  stage: assess
+  script:
+    - ./gradlew assessCommon
+  cache:
+    key: "${CI_COMMIT_SHA}"
+    policy: pull
+    untracked: true
+    paths:
+      - .gradle/
+
+project-assess:
+  stage: assess
+  script:
+    - ./gradlew assessGradle
+  cache:
+    key: "${CI_COMMIT_SHA}"
+    policy: pull
+    untracked: true
+    paths:
+      - .gradle/
+
+code-assess:
+  stage: assess
+  script:
+    - ./gradlew lint
+  cache:
+    key: "${CI_COMMIT_SHA}"
+    policy: pull
+    untracked: true
+    paths:
+      - .gradle/
+      - node_modules/
+
+code-tests:
+  stage: test
+  script:
+    - ./gradlew test
+  cache:
+    key: "${CI_COMMIT_SHA}"
+    policy: pull
+    untracked: true
+    paths:
+      - .gradle/
+      - node_modules/
+
+pack:
+  stage: assemble
+  script:
+    - ./gradlew build
+  cache:
+    key: "${CI_COMMIT_SHA}"
+    policy: pull
+    untracked: true
+    paths:
+      - .gradle/
+      - node_modules/
+  artifacts:
+    name: $CI_PROJECT_NAME-$(date +%Y%m%d-%H%M)-$CI_COMMIT_SHORT_SHA
+    paths:
+      - ./build/*.tgz

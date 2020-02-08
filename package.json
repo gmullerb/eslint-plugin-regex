@@ -1,0 +1,71 @@
+{
+  "name": "eslint-plugin-regex",
+  "description": "ESLint rules using Regular Expression",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "Gonzalo Müller Bravo",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "homepage": "https://gitlab.com/gmullerb/eslint-plugin-regex",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gmullerb/eslint-plugin-regex"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/gmullerb/eslint-plugin-regex/issues"
+  },
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "eslint plugin",
+    "regular expression",
+    "regex",
+    "regular expression rule",
+    "regex rule",
+    "eslintrule",
+    "eslint-rule",
+    "eslint rule",
+    "eslint regular expression",
+    "eslint regex",
+    "eslint regular expression rule",
+    "eslint regex rule",
+    "coding style",
+    "coding standards",
+    "code checker",
+    "code linter",
+    "code quality",
+    "code standards",
+    "code style",
+    "lint",
+    "jshint",
+    "js-hint",
+    "jslint",
+    "js-lint",
+    "js lint",
+    "js quality",
+    "js rules",
+    "js rules",
+    "js standards",
+    "js style",
+    "style guide",
+    "style checker",
+    "style linter",
+    "standard style",
+    "style"
+  ],
+  "scripts": {
+    "lint": "eslint --color \"**/*.js\"",
+    "test": "node tests/lib/rules/e2e-tests.js",
+    "check": "echo ==== Linting ==== && npm run lint && echo ==== Testing ==== && npm run test"
+  },
+  "peerDependencies": {
+    "eslint": "^6.0.0"
+  },
+  "devDependencies": {
+    "eslint": "~6.7.1",
+    "eslint-plugin-base-style-config": "1.0.1"
+  }
+}

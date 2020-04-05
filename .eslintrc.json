@@ -1,6 +1,7 @@
 {
   "extends": [
-    "plugin:base-style-config/js-rules"
+    "plugin:base-style-config/js-rules",
+    "plugin:base-style-config/import-rules"
   ],
   "env": {
     "node": true
@@ -10,9 +11,12 @@
   },
   "root": true,
   "rules": {
+    "global-require": "error",
     "max-params": "off",
     "no-console": "error",
     "no-invalid-this": "error",
+    "no-mixed-requires": "error",
+    "no-new-require": "error",
     "no-param-reassign": "off",
     "object-curly-newline": ["error", {
       "consistent": true

@@ -3,11 +3,11 @@
 build/
 node_modules/
 # Files
+*.tgz
 *.log
 # IDEs
 .vscode
 .vscode/
-theqtapp.pro.user
 .project
 .classpath
 .settings/

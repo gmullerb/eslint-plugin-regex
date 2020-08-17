@@ -2,8 +2,10 @@
 
 ## Prerequisites
 
-* Node/Npm, Node/Yarn or failing [Java](http://www.oracle.com/technetwork/java/javase/downloads).
+* Node/Npm, Node/Yarn or failing [Java](http://www.oracle.com/technetwork/java/javase/downloads) & [Gradle](https://gradle.org/).
 * [Git](https://git-scm.com/downloads) (only if you are going to clone the project).
+
+> Gradle will allow for quick isolate Node/Npm environments for different projects.
 
 ## Getting it
 
@@ -51,9 +53,13 @@ Npm scripts, [`package.json`](../package.json):
 * `lint.common`: checks common style of "all" files.
 * `lint.source`: checks eslint style of `js` files.
 * `lint`: runs lints.
-* `only-test`: runs test.
+* `test.only`: runs test.
 * `test`: runs test with coverage report.
-* `check`: runs lints, test, pack and audit.
+
+Additionally:
+
+* `npm run check`: will execute all tasks (`lint.common`, ..., `test.ts`, etc.).
+* `npm run`: will list all available script/task for the project.
 
 #### From Gradle
 

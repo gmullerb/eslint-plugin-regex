@@ -22,6 +22,8 @@
       "consistent": true
       }
     ],
+    "array-bracket-spacing": "off",
+    "indent": ["error", 2],
     "quotes":  [
       "error",
       "single"

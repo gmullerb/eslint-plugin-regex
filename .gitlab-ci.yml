@@ -21,7 +21,7 @@ create-cache:
     policy: push
     untracked: true
     paths:
-    - node_modules/
+      - node_modules/
 
 assess:
   stage: assess

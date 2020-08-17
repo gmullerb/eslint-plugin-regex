@@ -1,7 +1,7 @@
 //  Copyright (c) 2020 Gonzalo Müller Bravo.
 //  Licensed under the MIT License (MIT), see LICENSE.txt
-
 const RuleTester = require('eslint').RuleTester
+
 const requiredRegexRule = require('../../../lib/rules/required-regex-rule')
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 }})

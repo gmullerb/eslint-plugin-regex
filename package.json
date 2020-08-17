@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-regex",
   "description": "ESLint rules using Regular Expression",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "license": "MIT",
   "author": "Gonzalo Müller Bravo",
   "main": "lib/index.js",
@@ -69,18 +69,19 @@
     "lint": "npm run lint.common && npm run lint.source",
     "lint.common": "echo ==== Lint Common ==== && lintspaces --newline --indentation \"spaces\"  ./lib/**/*.* ./readme/**/*.* ./tests/**/*.* ./docs/**/*.* ./*.json ./*.yml ./*.md ./*.sh ./*.txt ./*.properties ./*.gradle ./.gitignore ./.npmignore",
     "lint.source": "echo ==== Lint Source Code ==== && eslint --color \"**/*.js\"",
-    "only-test": "node tests/lib/rules/e2e-tests.js",
-    "test": "echo ==== Test With Coverage ==== && mkdir -p build && nyc npm run only-test",
+    "test.only": "node tests/lib/rules/e2e-tests.js",
+    "test": "echo ==== Test With Coverage ==== && mkdir -p build && nyc npm run test.only",
     "prepack": "echo ==== Build Package ====",
-    "check": "npm run lint && npm test && mkdir -p build && cd build && npm pack ../ && npm audit"
+    "check": "npm install && npm run lint && npm test && mkdir -p build && cd build && npm pack ../",
+    "check.all": "npm run check && npm audit"
   },
   "peerDependencies": {
     "eslint": "^4.0.0"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-plugin-base-style-config": "^1.0.2",
-    "eslint-plugin-import": "^2.20.2",
+    "eslint": "^7.7.0",
+    "eslint-plugin-base-style-config": "^2.5.1",
+    "eslint-plugin-import": "^2.22.0",
     "lintspaces-cli": "^0.7.1",
     "nyc": "^15.0.0"
   },

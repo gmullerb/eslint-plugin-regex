@@ -5,7 +5,7 @@
 
 <h1 align="center">ESLint rules using Regular Expressions</h1>
 
-[![eslint-plugin-regex](https://badgen.net/badge/npm%20pack/eslint%20plugin%20regex/blue)](https://www.npmjs.com/package/eslint-plugin-regex)
+[![eslint-plugin-regex](https://badgen.net/badge/npm%20pack/eslint-plugin-regex/blue)](https://www.npmjs.com/package/eslint-plugin-regex)
 [![ ](https://badgen.net/npm/v/eslint-plugin-regex)](https://www.npmjs.com/package/eslint-plugin-regex)
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt)
 [![ ](https://gitlab.com/gmullerb/eslint-plugin-regex/badges/master/coverage.svg)](https://gitlab.com/gmullerb/eslint-plugin-regex/pipelines)
@@ -23,7 +23,7 @@ __________________
   ..
   "devDependencies": {
     "eslint": "^4.0.0",
-    "eslint-plugin-regex": "1.1.0",
+    "eslint-plugin-regex": "1.2.0",
     ..
 ```
 
@@ -133,13 +133,7 @@ Example of **correct** code for this rule:
 const text = 'Hello \'My Friend\''
 ```
 
-When the pattern is found splitting in more the one line the error message will not reflect the location (i.e. `1:1` will be shown), e.g.:
-
-```bash
- 1:1  error  Invalid regular expression /invalidRegex1/gm found in file  regex/invalid
-```
-
-When the pattern is found inside an specific line the error message will reflect the exact location, e.g.:
+When the pattern is found, the error message will reflect the exact location, e.g.:
 
 ```bash
  34:25  error  Invalid regular expression /invalidRegex1/gm found  regex/invalid
@@ -171,15 +165,45 @@ const text = 'Hello "My Friend"'
 Both rule has two options:
 
 * **array** of patterns definitions to analyze. [REQUIRED]
-  * Each pattern definition can be 'Short' or 'Detailed'.
+  * Each pattern definition can be 'Short' and/or 'Detailed'.
 * a **string** representing the regular expression for ignoring files for all patterns. [OPTIONAL]
   * Slashes (`/`) are not required in the string, e.g. To get the following regex `/.*test\.js/` define the following string `".*test\.js"` when using `.eslintrc.js` or `".*test\\.js"` when using `.eslintrc.json` (backslash needs to de double in a json file).
+
+```json
+[
+  "error",
+  [
+    "regex1",
+    "regexN"
+  ],
+  "ignoreFilesRegex"
+]
+```
 
 #### Short pattern definition
 
 It is specified by just a regular expression `string`, i.e. `"regex"`
 
 * Slashes (`/`) are not required in the string, e.g. To get the following regex `/\bhttp:/` define the following string `"\bhttp:"` when using `.eslintrc.js` or `"\\bhttp:"` when using `.eslintrc.json` (backslash needs to de double in a json file).
+
+```json
+{
+  "regex/invalid": [
+    "error",
+    [
+      "invalidRegex1",
+      "invalidRegexN"
+    ]
+  ],
+  "regex/required": [
+    "error",
+    [
+      "requiredRegex1",
+      "requiredRegexN"
+    ]
+  ]
+}
+```
 
 #### Detailed pattern definition
 
@@ -191,6 +215,18 @@ It is specified by an `object`, with the following fields:
 * `files`: An `object` specifying which files to analyze:
   * `ignore`: A `string` representing **Regular expression of the files to be ignored** when validating this specific pattern.
   * `inspect`:  A `string` representing **Regular expression of the files to be inspected** when validating this specific pattern.
+
+```json
+{
+  "id": "regexId",
+  "regex": "regex",
+  "message": "errorMessage",
+  "files": {
+    "ignore": "ignoreFilesRegex",
+    "inspect": "inspectFilesRegex"
+  }
+}
+```
 
 > * `regex` is the only Required field. Slashes (`/`) are not required in the string, e.g. To get the following regex `/\bhttp:/` define the following string `"\bhttp:"` when using `.eslintrc.js` or `"\\bhttp:"` when using `.eslintrc.json` (backslash needs to de double in a json file).  
 > * When `ignore` and `inspect` are present, `ignore` takes precedence.  
@@ -211,13 +247,15 @@ It is possible to use both type of definitions, 'Short pattern definition' with 
     "regex/invalid": [
       "error", [
         "invalidRegex1",
-        "invalidRegex2", {
+        "invalidRegex2",
+        {
           "regex": "invalidRegex3",
           "message": "errorMessage1",
           "files": {
             "inspect": "inspectFilesRegex1"
           }
-        }, {
+        },
+        {
           "id": "regexIdN",
           "regex": "invalidRegexN",
           "files": {
@@ -257,7 +295,7 @@ or
 Required regular expression /someRegex/gm not found in file
 ```
 
-The 'Detailed pattern definition' errors are reported with the following structure:
+The 'Detailed pattern definition' errors are reported with the following rules:
 
 A . If `message` is present then that **exact message is reported**.  
 B . If `id` is present then:
@@ -307,9 +345,7 @@ __________________
 
 ## Documentation
 
-* [`CHANGELOG.md`](js/CHANGELOG.md): add information of notable changes for each version here, chronologically ordered [1].
-
-> [1] [Keep a Changelog](http://keepachangelog.com)
+* [`CHANGELOG.md`](CHANGELOG.md): add information of notable changes for each version here, chronologically ordered ([Keep a Changelog](http://keepachangelog.com)).
 
 ## License
 
@@ -319,8 +355,8 @@ __________________
 ## Remember
 
 * Use code style verification tools => Encourages Best Practices, Efficiency, Readability and Learnability.
-* Start testing early => Encourages Reliability and Maintainability.
 * Code Review everything => Encourages Functional suitability, Performance Efficiency and Teamwork.
+* If viable, Start testing early => Encourages Reliability and Maintainability.
 
 ## Additional words
 
@@ -330,7 +366,9 @@ Don't forget:
 * **Learn everyday**.
 * **Learn yourself**.
 * **Share your knowledge**.
+* **Think different!**.
 * **Learn from the past, dream on the future, live and enjoy the present to the max!**.
+* **Enjoy and Value the Quest** (It's where you learn and grow).
 
 At life:
 

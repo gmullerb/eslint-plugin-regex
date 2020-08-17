@@ -1,7 +1,7 @@
 //  Copyright (c) 2020 Gonzalo Müller Bravo.
 //  Licensed under the MIT License (MIT), see LICENSE.txt
-
 const RuleTester = require('eslint').RuleTester
+
 const invalidRegexRule = require('../../../lib/rules/invalid-regex-rule')
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 }})
@@ -98,8 +98,8 @@ const shouldFoundAcrossLines = {
     ['^var\\s*invalid']
   ],
   errors: [{
-    message: 'Invalid regular expression /^var\\s*invalid/gm found in file',
-    line: 1,
+    message: 'Invalid regular expression /^var\\s*invalid/gm found',
+    line: 2,
     column: 1
   }]
 }
@@ -111,13 +111,30 @@ const shouldFoundAcrossMultiline = {
     ['^var\\s*invalid']
   ],
   errors: [{
-    message: 'Invalid regular expression /^var\\s*invalid/gm found in file',
-    line: 1,
+    message: 'Invalid regular expression /^var\\s*invalid/gm found',
+    line: 2,
     column: 1
   }, {
-    message: 'Invalid regular expression /^var\\s*invalid/gm found in file',
-    line: 1,
+    message: 'Invalid regular expression /^var\\s*invalid/gm found',
+    line: 6,
     column: 1
+  }]
+}
+
+const shouldFoundAcrossMultilineInTheMiddleOfLine = {
+  code: 'function z() {}\n   var \ninvalid = `1\n2`\n\n     var \ninvalid2 = 1',
+  filename: 'some.js',
+  options: [
+    ['var\\s*invalid']
+  ],
+  errors: [{
+    message: 'Invalid regular expression /var\\s*invalid/gm found',
+    line: 2,
+    column: 4
+  }, {
+    message: 'Invalid regular expression /var\\s*invalid/gm found',
+    line: 6,
+    column: 6
   }]
 }
 
@@ -134,7 +151,8 @@ ruleTester.run(
       shouldFoundMultiline,
       shouldFoundSameMultiline,
       shouldFoundAcrossLines,
-      shouldFoundAcrossMultiline
+      shouldFoundAcrossMultiline,
+      shouldFoundAcrossMultilineInTheMiddleOfLine
     ]
   }
 )

@@ -1,7 +1,7 @@
 //  Copyright (c) 2020 Gonzalo Müller Bravo.
 //  Licensed under the MIT License (MIT), see LICENSE.txt
-
 const RuleTester = require('eslint').RuleTester
+
 const invalidRegexRule = require('../../../lib/rules/invalid-regex-rule')
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 }})
@@ -160,8 +160,8 @@ const shouldFoundAcrossLines = {
     }]
   ],
   errors: [{
-    message: 'Invalid regular expression /^var\\s*invalid/gm found in file',
-    line: 1,
+    message: 'Invalid regular expression /^var\\s*invalid/gm found',
+    line: 2,
     column: 1
   }]
 }
@@ -175,12 +175,12 @@ const shouldFoundAcrossMultiline = {
     }]
   ],
   errors: [{
-    message: 'Invalid regular expression /^var\\s*invalid/gm found in file',
-    line: 1,
+    message: 'Invalid regular expression /^var\\s*invalid/gm found',
+    line: 2,
     column: 1
   }, {
-    message: 'Invalid regular expression /^var\\s*invalid/gm found in file',
-    line: 1,
+    message: 'Invalid regular expression /^var\\s*invalid/gm found',
+    line: 6,
     column: 1
   }]
 }

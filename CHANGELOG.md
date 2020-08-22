@@ -1,5 +1,10 @@
 # ESLint Plugin Regex Change Log
 
+## 1.2.1 - August 2020
+
+* Fixes #4 peerDependencies.
+* Updates README file.
+
 ## 1.2.0 - August 2020
 
 * Adds the specific line to the report for multiline regex (Big debt, Found some time, Done, Yes!).

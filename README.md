@@ -22,8 +22,8 @@ __________________
 ```json
   ..
   "devDependencies": {
-    "eslint": "^4.0.0",
-    "eslint-plugin-regex": "1.2.0",
+    "eslint": ">=4.0.0",
+    "eslint-plugin-regex": "1.2.1",
     ..
 ```
 

@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-regex",
   "description": "ESLint rules using Regular Expression",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "MIT",
   "author": "Gonzalo Müller Bravo",
   "main": "lib/index.js",
@@ -76,7 +76,7 @@
     "check.all": "npm run check && npm audit"
   },
   "peerDependencies": {
-    "eslint": "^4.0.0"
+    "eslint": ">=4.0.0"
   },
   "devDependencies": {
     "eslint": "^7.7.0",

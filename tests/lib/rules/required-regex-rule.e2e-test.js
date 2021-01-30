@@ -19,6 +19,19 @@ const shouldNotFind = {
   }]
 }
 
+const shouldHandleEmptyFile = {
+  code: '',
+  filename: 'some.test.js',
+  options: [
+    ['required']
+  ],
+  errors: [{
+    message: 'Required regular expression /required/gm not found in file',
+    line: 1,
+    column: 1
+  }]
+}
+
 const shouldIgnoreFile = {
   code: 'var z = 1\nvar x = "valid"',
   filename: 'some.test.js',
@@ -54,6 +67,7 @@ ruleTester.run(
     ],
     invalid: [
       shouldNotFind,
+      shouldHandleEmptyFile
     ]
   }
 )

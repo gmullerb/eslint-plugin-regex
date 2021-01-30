@@ -185,6 +185,51 @@ const shouldFoundAcrossMultiline = {
   }]
 }
 
+const shouldReplace = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: 'valid'
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "valid"'
+}
+
+const shouldReplaceSeveralRegex = {
+  code: 'var x = "invalid"\nvar z = 1',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: 'valid'
+    }, {
+      regex: 'var',
+      replacement: 'const'
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /var/gm found',
+    line: 1,
+    column: 1
+  }, {
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 1,
+    column: 10
+  }, {
+    message: 'Invalid regular expression /var/gm found',
+    line: 2,
+    column: 1
+  }],
+  output: 'const x = "valid"\nconst z = 1'
+}
+
 ruleTester.run(
   'invalid',
   invalidRegexRule, {
@@ -201,7 +246,9 @@ ruleTester.run(
       shouldFoundMultiline,
       shouldFoundSameMultiline,
       shouldFoundAcrossLines,
-      shouldFoundAcrossMultiline
+      shouldFoundAcrossMultiline,
+      shouldReplace,
+      shouldReplaceSeveralRegex
     ]
   }
 )

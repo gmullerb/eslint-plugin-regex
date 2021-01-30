@@ -23,6 +23,14 @@ const shouldIgnoreFile = {
   ]
 }
 
+const shouldHandleEmptyFile = {
+  code: '',
+  filename: 'some.test.js',
+  options: [
+    ['invalid']
+  ]
+}
+
 const shouldFound = {
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
@@ -143,7 +151,8 @@ ruleTester.run(
   invalidRegexRule, {
     valid: [
       shouldNotFind,
-      shouldIgnoreFile
+      shouldIgnoreFile,
+      shouldHandleEmptyFile
     ],
     invalid: [
       shouldFound,

@@ -1,5 +1,12 @@
 # ESLint Plugin Regex Change Log
 
+## 1.3.0 - January 2021
+
+* Adds replacements for invalid patterns.
+* Improves code coverage.
+* Improves documentation.
+* Improves project configuration.
+
 ## 1.2.1 - August 2020
 
 * Fixes #4 peerDependencies.

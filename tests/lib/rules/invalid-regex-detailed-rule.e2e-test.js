@@ -1,5 +1,6 @@
 //  Copyright (c) 2020 Gonzalo Müller Bravo.
 //  Licensed under the MIT License (MIT), see LICENSE.txt
+/* eslint-disable max-lines */
 const RuleTester = require('eslint').RuleTester
 
 const invalidRegexRule = require('../../../lib/rules/invalid-regex-rule')
@@ -230,6 +231,177 @@ const shouldReplaceSeveralRegex = {
   output: 'const x = "valid"\nconst z = 1'
 }
 
+const shouldReplaceWithFunction = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: 'return "valid"'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "valid"'
+}
+
+const shouldReplaceWithFunctionWithSomeProcessing = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: 'const result = text + "-"; return result'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "invalid-"'
+}
+
+const shouldNotReplaceWithInvalidFunctionCase01 = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: 'return valid'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "invalid"'
+}
+
+const shouldNotReplaceWithInvalidFunctionCase02 = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: 'throw new Exception("valid"); return "valid"'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "invalid"'
+}
+
+const shouldNotReplaceWithInvalidFunctionCase03 = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: 'if text === "text") return "valid"'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "invalid"'
+}
+
+const shouldNotReplaceWithInvalidFunctionCase04 = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: 'if (text === "text") return "valid"; else throw new Exception("valid")'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "invalid"'
+}
+
+const shouldNotReplaceWithInvalidFunctionCase05 = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: 'return text === "text" ? "valid" : new Date()'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "invalid"'
+}
+
+const shouldNotReplaceWithInvalidFunctionCase06 = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: 'text === "text" ? "valid" : new Date()'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "invalid"'
+}
+
+const shouldNotReplaceWithInvalidFunctionCase07 = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: 'return 2021'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "invalid"'
+}
+
 ruleTester.run(
   'invalid',
   invalidRegexRule, {
@@ -248,7 +420,16 @@ ruleTester.run(
       shouldFoundAcrossLines,
       shouldFoundAcrossMultiline,
       shouldReplace,
-      shouldReplaceSeveralRegex
+      shouldReplaceSeveralRegex,
+      shouldReplaceWithFunction,
+      shouldReplaceWithFunctionWithSomeProcessing,
+      shouldNotReplaceWithInvalidFunctionCase01,
+      shouldNotReplaceWithInvalidFunctionCase02,
+      shouldNotReplaceWithInvalidFunctionCase03,
+      shouldNotReplaceWithInvalidFunctionCase04,
+      shouldNotReplaceWithInvalidFunctionCase05,
+      shouldNotReplaceWithInvalidFunctionCase06,
+      shouldNotReplaceWithInvalidFunctionCase07
     ]
   }
 )

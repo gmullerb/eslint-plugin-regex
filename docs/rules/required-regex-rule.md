@@ -105,6 +105,14 @@ Internally, each string from the array will be converted into a Regular Expressi
 
 `"requiredRegex1"` will be transformed into `/requiredRegex1/gm`
 
+### Examples
+
+Check:
+
+* [required-regex Basic rule tests](tests/lib/rules/required-regex-rule.e2e-test.js)
+* [required-regex Detailed rule tests](tests/lib/rules/required-regex-detailed-rule.e2e-test.js)
+* [The set of Regex Rules of `eslint-plugin-base-style-config`](https://github.com/gmullerb/base-style-config/tree/master/js#regex-rules)
+
 ## Related Rules
 
 * [`regex/invalid`](docs/rules/invalid-regex-rule.md).

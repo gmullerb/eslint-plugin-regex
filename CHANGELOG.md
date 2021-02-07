@@ -1,5 +1,9 @@
 # ESLint Plugin Regex Change Log
 
+## 1.4.0 - February 2021
+
+* Adds replacements with functions for invalid patterns.
+
 ## 1.3.0 - January 2021
 
 * Adds replacements for invalid patterns.

@@ -23,7 +23,7 @@ __________________
   ..
   "devDependencies": {
     "eslint": ">=4.0.0",
-    "eslint-plugin-regex": "1.4.0",
+    "eslint-plugin-regex": "1.5.0",
     ..
 ```
 
@@ -215,7 +215,7 @@ It is specified by an `object`, with the following fields:
   * An optional `string` used to replace the **invalid** found pattern, or
   * An optional `object` that establish how the **invalid** found pattern will be replaced:
     * `function`: used to replace the **invalid** found pattern.
-      * It will receive only 1 parameter with the name `text`.
+      * It will receive 2 parameters: `text` and `captured`.
       * It must return a `string` value, if not, return value will be ignored.
       * Its definition must be only the body of the function.
       * [More Information](#definition-of-the-function-used-to-replace-invalid-found-pattern).
@@ -245,21 +245,24 @@ It is specified by an `object`, with the following fields:
 
 > [1] In order to fix issues `eslint` must be run with `--fix` option.
 
-##### Definition of the Function used to replace **invalid** found pattern
+##### Definition of the Function used to replace the *invalid* found pattern
 
 Definition of the function must be done as a `string` in 1 line, and the following rules apply:
 
 * It must return a `string` value, if not, return value will be ignored, i.e. it will silently fail.
-* Its definition must be only the body of the function.
+* Its definition must be **only the body of the function**.
 * If the function has invalid Javascript code, the function will be ignored, i.e. it will silently fail.
 
-Function will receive only 1 parameter with the name `text`, with the value of the invalid text found.
+Function will receive 2 parameters:
 
-e.g.
+* `text`: a `string` with the value of the invalid text found.
+* `captured`: an `array` of strings with the values of the captured groups for the regex.
 
-`"return text.trim()"` => only the body of the function + return a `string` value
+e.g. Using parameter `text`
 
-`.eslintrc.json`:`
+`"return text.trim()"` => only the body of the function + returns a `string` value based on `text`
+
+Having the following rule in `.eslintrc.json`:
 
 ```json
 {
@@ -283,6 +286,49 @@ when linting with fix, the result will be:
 
 ```js
 const exception = "error19"
+```
+
+e.g. Using parameter `captured`
+
+`"return captured[0]"` => only the body of the function + returns a `string` value based on `captured`
+
+Having the following rule in `.eslintrc.json`:
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "\\serror(\\w*)\\s",
+  "replacement": {
+    "function": "return captured[0]"
+  }
+}
+```
+
+then, given:
+
+`example.js`
+
+```js
+const exception = " error19 "
+```
+
+when linting with fix, the result will be:
+
+```js
+const exception = "19"
+```
+
+###### Debugging of the Replacement Function for *invalid* found pattern
+
+* It is possible to add `console` statements to print some information in the Replacement Function.
+
+```json
+{
+      regex: '\\serror(\\w*)\\s',
+      replacement: {
+        function: 'const extract = captured[0]; console.log(extract); return extract'
+      }
+    }
 ```
 
 #### Mixing definitions

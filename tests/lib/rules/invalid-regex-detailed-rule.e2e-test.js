@@ -402,6 +402,66 @@ const shouldNotReplaceWithInvalidFunctionCase07 = {
   output: 'var z = 1\nvar x = "invalid"'
 }
 
+const shouldReplaceWithCapturingGroupsWithoutCaptured = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'inval(\\w+)',
+      replacement: 'valid'
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /inval(\\w+)/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "valid"'
+}
+
+const shouldReplaceWithFunctionWithCaptured = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'inval(\\w*)',
+      message: 'don`t use inval',
+      replacement: {
+        function: 'return captured[0]'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'don`t use inval',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "id"'
+}
+
+const shouldReplaceWithFunctionWithCapturedWithLog = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'inval(\\w*)',
+      message: 'don`t use inval',
+      replacement: {
+        /**
+         * This will generate a output to the console when testing
+         */
+        function: 'console.log(text); console.log(captured[0]); return captured[0]'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'don`t use inval',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "id"'
+}
+
 ruleTester.run(
   'invalid',
   invalidRegexRule, {
@@ -429,7 +489,10 @@ ruleTester.run(
       shouldNotReplaceWithInvalidFunctionCase04,
       shouldNotReplaceWithInvalidFunctionCase05,
       shouldNotReplaceWithInvalidFunctionCase06,
-      shouldNotReplaceWithInvalidFunctionCase07
+      shouldNotReplaceWithInvalidFunctionCase07,
+      shouldReplaceWithCapturingGroupsWithoutCaptured,
+      shouldReplaceWithFunctionWithCaptured,
+      shouldReplaceWithFunctionWithCapturedWithLog
     ]
   }
 )

@@ -462,6 +462,45 @@ const shouldReplaceWithFunctionWithCapturedWithLog = {
   output: 'var z = 1\nvar x = "id"'
 }
 
+const shouldReplaceWithFunctionWith$Text = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: 'const result = $[0] + "-"; return result'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "invalid-"'
+}
+
+const shouldReplaceWithFunctionWith$Captured = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'inval(\\w*)',
+      message: 'don`t use inval',
+      replacement: {
+        function: 'return $[1]'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'don`t use inval',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "id"'
+}
+
 ruleTester.run(
   'invalid',
   invalidRegexRule, {
@@ -492,7 +531,9 @@ ruleTester.run(
       shouldNotReplaceWithInvalidFunctionCase07,
       shouldReplaceWithCapturingGroupsWithoutCaptured,
       shouldReplaceWithFunctionWithCaptured,
-      shouldReplaceWithFunctionWithCapturedWithLog
+      shouldReplaceWithFunctionWithCapturedWithLog,
+      shouldReplaceWithFunctionWith$Text,
+      shouldReplaceWithFunctionWith$Captured
     ]
   }
 )

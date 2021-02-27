@@ -1,5 +1,9 @@
 # ESLint Plugin Regex Change Log
 
+## 1.6.0 - February 2021
+
+* Adds additional parameter `$` to replacement function for invalid patterns in order to allow smaller definitions.
+
 ## 1.5.0 - February 2021
 
 * Adds capturing groups to replacement functions for invalid patterns.

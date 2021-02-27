@@ -61,7 +61,7 @@ It is specified by an `object`, with the following fields:
   * An optional `string` used to replace the invalid found pattern, or
   * An optional `object` that establish how the invalid found pattern will be replaced:
     * `function`: used to replace the invalid found pattern.
-      * It will receive 2 parameters: `text` and `captured`.
+      * It will receive 3 parameters: `text`, `captured` and `$`, that can be used as desired.
       * It must return a `string` value, if not, return value will be ignored.
       * Its definition must be only the body of the function.
       * [More Information](#definition-of-the-function-used-to-replace-invalid-found-pattern).
@@ -113,10 +113,15 @@ Definition of the function must be done as a `string` in 1 line, and the followi
 * Its definition must be **only the body of the function**.
 * If the function has invalid Javascript code, the function will be ignored, i.e. it will silently fail.
 
-Function will receive 2 parameters:
+Function will receive 3 parameters, to be used as desired:
 
 * `text`: a `string` with the value of the invalid text found.
 * `captured`: an `array` of strings with the values of the captured groups for the regex.
+* `$`: an `array` of strings, with the value of the invalid text found plus the values of the captured groups for the regex.
+  * `$[0]` = `text`: a `string` with the value of the invalid text found.
+  * `$[1..]` = `captured`: an `array` of strings with the values of the captured groups for the regex.
+    * `$[1]` = `captured[0]` and so on.
+  * It allows smaller definitions.
 
 e.g. Using parameter `text`
 
@@ -130,6 +135,18 @@ Having the following rule in `.eslintrc.json`:
   "regex": "\\serror\\w*\\s",
   "replacement": {
     "function": "return text.trim()"
+  }
+}
+```
+
+or using `$`:
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "\\serror\\w*\\s",
+  "replacement": {
+    "function": "return $[0].trim()"
   }
 }
 ```
@@ -164,6 +181,18 @@ Having the following rule in `.eslintrc.json`:
 }
 ```
 
+or using `$`:
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "\\serror(\\w*)\\s",
+  "replacement": {
+    "function": "return $[1]"
+  }
+}
+```
+
 then, given:
 
 `example.js`
@@ -176,6 +205,72 @@ when linting with fix, the result will be:
 
 ```js
 const exception = "19"
+```
+
+e.g. Using parameters `text` and `captured`
+
+`"return text + ' = ' + captured[0]  + ' + ' + captured[1] + ' = ' + (parseInt(captured[0]) + parseInt(captured[1]))"` => only the body of the function + returns a `string` value based on `text` and `captured`
+
+Having the following rule in `.eslintrc.json`:
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "(\\d+)\\+(\\d+)",
+  "replacement": {
+    "function": "return text + ' = ' + captured[0]  + ' + ' + captured[1] + ' = ' + (parseInt(captured[0]) + parseInt(captured[1]))"
+  }
+}
+```
+
+or using `$`:
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "(\\d+)\\+(\\d+)",
+  "replacement": {
+    "function": "return $[0] + ' = ' + $[1]  + ' + ' + $[2] + ' = ' + (parseInt($[1]) + parseInt($[2]))"
+  }
+}
+```
+
+or :
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "(\\d+)\\+(\\d+)",
+  "replacement": {
+    "function": "return text + ' = ' + $[1]  + ' + ' + $[2] + ' = ' + (parseInt($[1]) + parseInt($[2]))"
+  }
+}
+```
+
+or :
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "(\\d+)\\+(\\d+)",
+  "replacement": {
+    "function": "return `${text} = ${captured[0]} + ${captured[1]} = ${parseInt($[1]) + parseInt($[2])}`"
+  }
+}
+```
+
+then, given:
+
+`example.js`
+
+```js
+const sum = "4+5"
+```
+
+when linting with fix, the result will be:
+
+```js
+const sum = "4+5 = 4 + 5 = 9"
 ```
 
 ##### Debugging of the Replacement Function for invalid found pattern

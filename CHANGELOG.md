@@ -1,5 +1,9 @@
 # ESLint Plugin Regex Change Log
 
+## 1.7.0 - February 2021
+
+* Closes #6, Removes the requirement of `return` presence for replacement functions for invalid patterns.
+
 ## 1.6.0 - February 2021
 
 * Adds additional parameter `$` to replacement function for invalid patterns in order to allow smaller definitions.

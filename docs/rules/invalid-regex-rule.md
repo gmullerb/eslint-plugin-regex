@@ -111,6 +111,7 @@ Definition of the function must be done as a `string` in 1 line, and the followi
 
 * It must return a `string` value, if not, return value will be ignored, i.e. it will silently fail.
 * Its definition must be **only the body of the function**.
+  * For "simple" functions where the `return` is found at the beginning of the body of the function and the **exact** word *return* is not present, `return` can be omitted.
 * If the function has invalid Javascript code, the function will be ignored, i.e. it will silently fail.
 
 Function will receive 3 parameters, to be used as desired:
@@ -123,7 +124,7 @@ Function will receive 3 parameters, to be used as desired:
     * `$[1]` = `captured[0]` and so on.
   * It allows smaller definitions.
 
-e.g. Using parameter `text`
+**e.g. Using parameter `text`**
 
 `"return text.trim()"` => only the body of the function + returns a `string` value based on `text`
 
@@ -165,7 +166,31 @@ when linting with fix, the result will be:
 const exception = "error19"
 ```
 
-e.g. Using parameter `captured`
+As the body of the function is "simple", i.e. the `return` is found at the beginning of the body of the function, and besides, the word *return* is not present, then the definition could be done as:
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "\\serror\\w*\\s",
+  "replacement": {
+    "function": "text.trim()"
+  }
+}
+```
+
+or
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "\\serror\\w*\\s",
+  "replacement": {
+    "function": "$[0].trim()"
+  }
+}
+```
+
+**e.g. Using parameter `captured`**
 
 `"return captured[0]"` => only the body of the function + returns a `string` value based on `captured`
 
@@ -207,7 +232,31 @@ when linting with fix, the result will be:
 const exception = "19"
 ```
 
-e.g. Using parameters `text` and `captured`
+As the body of the function is "simple", i.e. the `return` is found at the beginning of the body of the function, and besides, the word *return* is not present, then the definition could be done as:
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "\\serror(\\w*)\\s",
+  "replacement": {
+    "function": "captured[0]"
+  }
+}
+```
+
+or
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "\\serror(\\w*)\\s",
+  "replacement": {
+    "function": "$[1]"
+  }
+}
+```
+
+**e.g. Using parameters `text` and `captured`**
 
 `"return text + ' = ' + captured[0]  + ' + ' + captured[1] + ' = ' + (parseInt(captured[0]) + parseInt(captured[1]))"` => only the body of the function + returns a `string` value based on `text` and `captured`
 
@@ -271,6 +320,78 @@ when linting with fix, the result will be:
 
 ```js
 const sum = "4+5 = 4 + 5 = 9"
+```
+
+As the body of the function is "simple", i.e. the `return` is found at the beginning of the body of the function, and besides, the word *return* is not present, then the definition could be done as:
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "(\\d+)\\+(\\d+)",
+  "replacement": {
+    "function": "text + ' = ' + $[1]  + ' + ' + $[2] + ' = ' + (parseInt($[1]) + parseInt($[2]))"
+  }
+}
+```
+
+or :
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "(\\d+)\\+(\\d+)",
+  "replacement": {
+    "function": "`${text} = ${captured[0]} + ${captured[1]} = ${parseInt($[1]) + parseInt($[2])}`"
+  }
+}
+```
+
+**e.g. `return` required**
+
+e.g. `const result = text === 'superb' ? 'Superb' : text; return result` => only the body of the function + returns a `string` value based on `text`.
+
+Since the `return` is not found at the beginning of the body of the function, `return` cannot be omitted, then rule definition will be as usual:
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "\\w+",
+  "replacement": {
+    "function": "const result = text === 'superb' ? 'Superb' : text; return result"
+  }
+}
+```
+
+> Some cases may use Comma operator, e.g. `"function": "result = text === 'superb' ? 'Superb' : text, result"`
+
+e.g. `return text === 'return' ? 'Return' : text` => only the body of the function + returns a `string` value based on `text`.
+
+Since the *exact* word *return* is present, this will **required** `return`, then rule definition will be as usual:
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "\\w+",
+  "replacement": {
+    "function": "return text === 'return' ? 'Return' : text"
+  }
+}
+```
+
+Following case does not required `return`:
+
+e.g. `return text === 'Return' ? 'RETURN' : text` => only the body of the function + returns a `string` value based on `text`.
+
+Since the **exact** word *return* is not present, this will allow the following rule definition to be:
+
+```json
+{
+  "id": "regexIdN",
+  "regex": "\\w+",
+  "replacement": {
+    "function": "text === 'Return' ? 'RETURN' : text"
+  }
+}
 ```
 
 ##### Debugging of the Replacement Function for invalid found pattern

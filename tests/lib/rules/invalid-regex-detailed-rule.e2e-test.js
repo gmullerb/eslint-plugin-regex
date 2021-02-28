@@ -269,6 +269,44 @@ const shouldReplaceWithFunctionWithSomeProcessing = {
   output: 'var z = 1\nvar x = "invalid-"'
 }
 
+const shouldReplaceWithoutReturnFunction = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: 'text !== "text" ? "valid" : new Date()'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "valid"'
+}
+
+const shouldReplaceWithoutReturnFunctionAndReturnPresent = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: 'text === "Return" ? "invalid" : "valid"'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "valid"'
+}
+
 const shouldNotReplaceWithInvalidFunctionCase01 = {
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
@@ -402,6 +440,25 @@ const shouldNotReplaceWithInvalidFunctionCase07 = {
   output: 'var z = 1\nvar x = "invalid"'
 }
 
+const shouldNotReplaceWithInvalidFunctionCase08InvalidReturnDetected = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: 'text === "return" ? "valid" : "no"'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "invalid"'
+}
+
 const shouldReplaceWithCapturingGroupsWithoutCaptured = {
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
@@ -481,6 +538,25 @@ const shouldReplaceWithFunctionWith$Text = {
   output: 'var z = 1\nvar x = "invalid-"'
 }
 
+const shouldReplaceWithFunctionWith$TextWithoutReturn = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: '`${$[0]}-`'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "invalid-"'
+}
+
 const shouldReplaceWithFunctionWith$Captured = {
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
@@ -499,6 +575,26 @@ const shouldReplaceWithFunctionWith$Captured = {
     column: 10
   }],
   output: 'var z = 1\nvar x = "id"'
+}
+
+const shouldReplaceWithFunctionWith$CapturedWithoutReturnUsingCommanOperator = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'inval(\\w*)',
+      message: 'don`t use inval',
+      replacement: {
+        function: 'result = $[1] === "id" ? "di" : $[1], result'
+      }
+    }]
+  ],
+  errors: [{
+    message: 'don`t use inval',
+    line: 2,
+    column: 10
+  }],
+  output: 'var z = 1\nvar x = "di"'
 }
 
 ruleTester.run(
@@ -522,6 +618,8 @@ ruleTester.run(
       shouldReplaceSeveralRegex,
       shouldReplaceWithFunction,
       shouldReplaceWithFunctionWithSomeProcessing,
+      shouldReplaceWithoutReturnFunction,
+      shouldReplaceWithoutReturnFunctionAndReturnPresent,
       shouldNotReplaceWithInvalidFunctionCase01,
       shouldNotReplaceWithInvalidFunctionCase02,
       shouldNotReplaceWithInvalidFunctionCase03,
@@ -529,11 +627,14 @@ ruleTester.run(
       shouldNotReplaceWithInvalidFunctionCase05,
       shouldNotReplaceWithInvalidFunctionCase06,
       shouldNotReplaceWithInvalidFunctionCase07,
+      shouldNotReplaceWithInvalidFunctionCase08InvalidReturnDetected,
       shouldReplaceWithCapturingGroupsWithoutCaptured,
       shouldReplaceWithFunctionWithCaptured,
       shouldReplaceWithFunctionWithCapturedWithLog,
       shouldReplaceWithFunctionWith$Text,
-      shouldReplaceWithFunctionWith$Captured
+      shouldReplaceWithFunctionWith$TextWithoutReturn,
+      shouldReplaceWithFunctionWith$Captured,
+      shouldReplaceWithFunctionWith$CapturedWithoutReturnUsingCommanOperator
     ]
   }
 )

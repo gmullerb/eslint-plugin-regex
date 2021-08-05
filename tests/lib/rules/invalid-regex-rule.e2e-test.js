@@ -146,6 +146,37 @@ const shouldFoundAcrossMultilineInTheMiddleOfLine = {
   }]
 }
 
+const shouldFoundAcrossMultilineInTheMiddleOfLineMultipleTimes = {
+  code: [
+    'const one = `{',
+    '    "TotalItems":5,',
+    '}`;',
+    'const two = `{',
+    '    "TotalItems":5,',
+    '}`;',
+    'const three = `{',
+    '    "TotalItems":5,',
+    '}`;'
+  ].join('\n'),
+  filename: 'some.js',
+  options: [
+    ['[`\'"][\\s\\n]*\\{[\\s\\n]*"']
+  ],
+  errors: [{
+    message: 'Invalid regular expression /[`\'"][\\s\\n]*\\{[\\s\\n]*"/gm found',
+    line: 1,
+    column: 13
+  }, {
+    message: 'Invalid regular expression /[`\'"][\\s\\n]*\\{[\\s\\n]*"/gm found',
+    line: 4,
+    column: 13
+  }, {
+    message: 'Invalid regular expression /[`\'"][\\s\\n]*\\{[\\s\\n]*"/gm found',
+    line: 7,
+    column: 15
+  }]
+}
+
 ruleTester.run(
   'invalid',
   invalidRegexRule, {
@@ -161,7 +192,8 @@ ruleTester.run(
       shouldFoundSameMultiline,
       shouldFoundAcrossLines,
       shouldFoundAcrossMultiline,
-      shouldFoundAcrossMultilineInTheMiddleOfLine
+      shouldFoundAcrossMultilineInTheMiddleOfLine,
+      shouldFoundAcrossMultilineInTheMiddleOfLineMultipleTimes
     ]
   }
 )

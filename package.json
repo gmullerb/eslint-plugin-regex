@@ -1,46 +1,40 @@
 {
   "name": "eslint-plugin-regex",
   "description": "ESLint rules using Regular Expression",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "license": "MIT",
   "author": "Gonzalo Müller Bravo",
   "main": "lib/index.js",
   "files": [
     "lib"
   ],
-  "homepage": "https://gitlab.com/gmullerb/eslint-plugin-regex",
+  "homepage": "https://eslint-plugin-regex.github.io",
   "repository": {
     "type": "git",
     "url": "https://github.com/gmullerb/eslint-plugin-regex"
   },
   "bugs": {
-    "url": "https://gitlab.com/gmullerb/eslint-plugin-regex/issues"
+    "url": "https://github.com/gmullerb/eslint-plugin-regex/issues"
   },
   "keywords": [
+    "eslint-plugin-regex",
     "eslint",
-    "eslintplugin",
-    "eslint-plugin",
-    "eslint plugin",
-    "regular expression",
-    "regular-expression",
+    "regex-rule",
     "regex",
     "regexp",
-    "regular expression rule",
-    "regular-expression-rule",
-    "regex rule",
-    "regex-rule",
-    "eslintrule",
-    "eslint-rule",
-    "eslint-rules",
-    "eslint rule",
-    "eslint regular expression",
-    "eslint-regular-expression",
-    "eslint regex",
     "eslint-regex",
-    "eslint regular expression rule",
-    "eslint-regular-expression-rule",
-    "eslint regex rule",
+    "eslint-rule",
     "eslint-regex-rule",
+    "rule",
+    "expression",
+    "regular-expression",
+    "eslint-regular-expression",
+    "eslint-regular-expression-rule",
+    "eslintrule",
+    "regular-expression-rule",
+    "eslintplugin",
+    "eslint-plugin",
+    "plugin",
     "coding style",
     "coding standards",
     "code checker",
@@ -48,7 +42,9 @@
     "code quality",
     "code standards",
     "code style",
+    "syntax",
     "lint",
+    "linter",
     "jshint",
     "js-hint",
     "jslint",
@@ -62,6 +58,7 @@
     "style guide",
     "style checker",
     "style linter",
+    "standard",
     "standard style",
     "style"
   ],
@@ -80,11 +77,11 @@
     "eslint": ">=4.0.0"
   },
   "devDependencies": {
-    "eslint": "^7.7.0",
-    "eslint-plugin-base-style-config": "^2.5.1",
-    "eslint-plugin-import": "^2.22.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-base-style-config": "^2.8.0",
+    "eslint-plugin-import": "^2.24.2",
     "lintspaces-cli": "^0.7.1",
-    "nyc": "^15.0.0"
+    "nyc": "^15.1.0"
   },
   "nyc": {
     "check-coverage": true,

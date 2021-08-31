@@ -1,16 +1,18 @@
 <p align="center">
   <br/>
-  <img src="https://assets.gitlab-static.net/uploads/-/system/project/avatar/16770425/eslint-plugin-regex.png" alt=" "/>
+  <a href="https://eslint-plugin-regex.github.io/"><img src="https://assets.gitlab-static.net/uploads/-/system/project/avatar/16770425/eslint-plugin-regex.png" alt=" "/></a>
 </p>
 
 <h1 align="center">ESLint rules using Regular Expressions</h1>
 
+[![eslint-plugin-regex](https://badgen.net/badge/homepage/eslint-plugin-regex/blue)](https://eslint-plugin-regex.github.io/)
 [![eslint-plugin-regex](https://badgen.net/badge/npm%20pack/eslint-plugin-regex/blue)](https://www.npmjs.com/package/eslint-plugin-regex)
 [![ ](https://badgen.net/npm/v/eslint-plugin-regex)](https://www.npmjs.com/package/eslint-plugin-regex)
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt)
-[![ ](https://gitlab.com/gmullerb/eslint-plugin-regex/badges/master/coverage.svg)](https://gitlab.com/gmullerb/eslint-plugin-regex/pipelines)
+[![ ](https://gitlab.com/gmullerb/eslint-plugin-regex/badges/master/coverage.svg)](https://gmullerb.gitlab.io/eslint-plugin-regex/coverage/index.html)
 [![Github repo](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/gmullerb/eslint-plugin-regex)
 [![Gitlab repo](https://badgen.net/badge/icon/gitlab?icon=gitlab&label)](https://gitlab.com/gmullerb/eslint-plugin-regex)
+
 __________________
 
 ## Quick Start
@@ -23,7 +25,7 @@ __________________
   ..
   "devDependencies": {
     "eslint": ">=4.0.0",
-    "eslint-plugin-regex": "1.7.0",
+    "eslint-plugin-regex": "1.8.0",
     ..
 ```
 
@@ -676,11 +678,12 @@ __________________
 
 ## Documentation
 
-* [`CHANGELOG.md`](CHANGELOG.md): add information of notable changes for each version here, chronologically ordered ([Keep a Changelog](http://keepachangelog.com)).
+* [`CHANGELOG.md`](CHANGELOG.md): contains the information about changes in each version, chronologically ordered ([Keep a Changelog](http://keepachangelog.com)).
 
 ## License
 
 [MIT License](LICENSE.txt)
+
 __________________
 
 ## Remember

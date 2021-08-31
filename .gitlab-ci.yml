@@ -44,20 +44,22 @@ test:
     untracked: true
     paths:
       - node_modules/
-
-pack:
-  stage: assemble
-  script:
-    - mkdir -p build
-    - cd build
-    - npm pack ../
-  cache:
-    key: "${CI_COMMIT_SHA}"
-    policy: pull
-    untracked: true
-    paths:
-      - node_modules/
   artifacts:
-    name: $CI_PROJECT_NAME-$(date +%Y%m%d-%H%M)-$CI_COMMIT_SHORT_SHA
+    when: always
     paths:
-      - ./build/*.tgz
+    - build/coverage/lcov-report/
+
+pages:
+  stage: assemble
+  dependencies:
+    - test
+  script:
+    - mkdir -p to_public
+    - touch to_public/index.html
+    - mv build/coverage/lcov-report/ to_public/coverage
+    - mv to_public public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master

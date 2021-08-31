@@ -1,5 +1,9 @@
 # ESLint Plugin Regex Change Log
 
+## 1.8.0 - August 2021
+
+* Closes #11, Improves the specification of the number of the line of the found error for the final report, Thanks to Maxim-Mazurok for His collaboration.
+
 ## 1.7.0 - February 2021
 
 * Closes #6, Removes the requirement of `return` presence for replacement functions for invalid patterns.

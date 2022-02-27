@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-regex",
   "description": "ESLint rules using Regular Expression",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "license": "MIT",
   "author": "Gonzalo Müller Bravo",
   "main": "lib/index.js",
@@ -64,23 +64,27 @@
   ],
   "scripts": {
     "lint": "npm run lint.common && npm run lint.source",
-    "lint.common": "echo ==== Lint Common ==== && lintspaces --newline --indentation \"spaces\"  ./lib/**/*.* ./readme/**/*.* ./tests/**/*.* ./docs/**/*.* ./*.json ./*.yml ./*.md ./*.sh ./*.txt ./*.properties ./*.gradle ./.gitignore ./.npmignore",
+    "lint.common": "echo ==== Lint Common ==== && eslint --config .eslintrc-any.json \"**/[\\.a-zA-Z]*.+(js|jsx|ts|tsx|json|yml|xml|sh|txt|md|svg|properties|gradle|java|cpp|c|html|css|groovy)\" \"**/.+(|gitignore|npmignore)\" --no-eslintrc --ignore-pattern \"build\"",
     "lint.source": "echo ==== Lint Source Code ==== && eslint --color \"**/*.js\"",
-    "test.only": "node tests/lib/rules/e2e-tests.js",
+    "test.only": "node tests/tests.js && node tests/lib/rules/e2e-tests.js ",
     "test": "echo ==== Test With Coverage ==== && mkdir -p build && nyc npm run test.only",
     "prepack": "echo ==== Build Package ====",
     "check": "npm install && npm run lint && npm test && mkdir -p build && cd build && npm pack ../",
     "check.all": "npm run check && npm audit",
     "prepublishOnly": "npm run check"
   },
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "peerDependencies": {
     "eslint": ">=4.0.0"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-plugin-base-style-config": "^2.8.0",
-    "eslint-plugin-import": "^2.24.2",
-    "lintspaces-cli": "^0.7.1",
+    "any-eslint-parser": "^1.0.1",
+    "eslint": "^8.12.0",
+    "eslint-plugin-base-style-config": "^2.8.1",
+    "eslint-plugin-import": "^2.25.4",
+    "jasmine": "^4.0.2",
     "nyc": "^15.1.0"
   },
   "nyc": {

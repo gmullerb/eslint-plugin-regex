@@ -2,8 +2,6 @@
 //  Licensed under the MIT License (MIT), see LICENSE.txt
 const RuleTester = require('eslint').RuleTester
 
-const requiredRegexRule = require('../../../lib/rules/required-regex-rule')
-
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 }})
 
 const shouldNotFind = {
@@ -59,7 +57,7 @@ const shouldFoundAcrossLines = {
 
 ruleTester.run(
   'required',
-  requiredRegexRule, {
+  require('../../../lib').rules.required, {
     valid: [
       shouldIgnoreFile,
       shouldFound,
@@ -71,3 +69,37 @@ ruleTester.run(
     ]
   }
 )
+
+ruleTester.run(
+  'required_extra',
+  require('../../../lib').rules.required_extra, {
+    valid: [
+      shouldIgnoreFile,
+      shouldFound,
+      shouldFoundAcrossLines
+    ],
+    invalid: [
+      shouldNotFind,
+      shouldHandleEmptyFile
+    ]
+  }
+)
+
+ruleTester.run(
+  'required-extra',
+  require('../../../lib').rules['required-extra'], {
+    valid: [
+      shouldIgnoreFile,
+      shouldFound,
+      shouldFoundAcrossLines
+    ],
+    invalid: [
+      shouldNotFind,
+      shouldHandleEmptyFile
+    ]
+  }
+)
+
+if(require('../../../lib').rules['no-valid-extra'] !== undefined) {
+  throw 'non valid rule should be undefined'
+}

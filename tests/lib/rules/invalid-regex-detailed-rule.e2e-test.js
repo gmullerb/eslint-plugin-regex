@@ -459,6 +459,24 @@ const shouldNotReplaceWithInvalidFunctionCase08InvalidReturnDetected = {
   output: 'var z = 1\nvar x = "invalid"'
 }
 
+const shouldNotReplaceWithInvalidFunctionCase09NoStringFunction = {
+  code: 'var z = 1\nvar x = "invalid"',
+  filename: 'some.js',
+  options: [
+    [{
+      regex: 'invalid',
+      replacement: {
+        function: 2
+      }
+    }]
+  ],
+  errors: [{
+    message: 'Invalid regular expression /invalid/gm found',
+    line: 2,
+    column: 10
+  }]
+}
+
 const shouldReplaceWithCapturingGroupsWithoutCaptured = {
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
@@ -577,7 +595,7 @@ const shouldReplaceWithFunctionWith$Captured = {
   output: 'var z = 1\nvar x = "id"'
 }
 
-const shouldReplaceWithFunctionWith$CapturedWithoutReturnUsingCommanOperator = {
+const shouldReplaceWithFunctionWith$CapturedWithoutReturnUsingCommaOperator = {
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -634,7 +652,27 @@ ruleTester.run(
       shouldReplaceWithFunctionWith$Text,
       shouldReplaceWithFunctionWith$TextWithoutReturn,
       shouldReplaceWithFunctionWith$Captured,
-      shouldReplaceWithFunctionWith$CapturedWithoutReturnUsingCommanOperator
+      shouldReplaceWithFunctionWith$CapturedWithoutReturnUsingCommaOperator
     ]
   }
 )
+
+try {
+  ruleTester.run(
+    'invalid-schema',
+    invalidRegexRule, {
+      valid: [
+        shouldNotFind
+      ],
+      invalid: [
+        shouldNotReplaceWithInvalidFunctionCase09NoStringFunction
+      ]
+    }
+  )
+  throw 'non valid schema'
+}
+catch(error) {
+  if(error.toString().indexOf('Value 2 should be string') === -1) {
+    throw 'non valid schema for replacement.function'
+  }
+}

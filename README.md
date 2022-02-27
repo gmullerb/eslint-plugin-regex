@@ -23,9 +23,12 @@ __________________
 
 ```json
   ..
+  "engines" : {
+    "node" : ">=6.0.0"
+  },
   "devDependencies": {
     "eslint": ">=4.0.0",
-    "eslint-plugin-regex": "1.8.0",
+    "eslint-plugin-regex": "1.9.0",
     ..
 ```
 
@@ -58,6 +61,8 @@ Short configuration:
 }
 ```
 
+Files will be checked for the absence of `invalidRegex1` and `invalidRegexN`, and for the presence of `requiredRegex1` and `requiredRegexN`, and files with name matching `ignoreFilesRegex` will not be checked.
+
 Detailed configuration:
 
 `.eslintrc.json`:
@@ -71,10 +76,10 @@ Detailed configuration:
     "regex/invalid": [
       "error", [{
           "regex": "invalidRegex1",
-          "message": "errorMessage1",
           "replacement": "newValue"
         }, {
           "id": "regexIdN",
+          "message": "errorMessageN",
           "regex": "invalidRegexN",
           "files": {
             "ignore": "ignoreFilesRegexN"
@@ -86,15 +91,15 @@ Detailed configuration:
       "error", [{
           "id": "regexId1",
           "regex": "requiredRegex1",
+          "message": "errorMessage1",
           "files": {
             "inspect": "inspectFilesRegex1"
           }
         }, {
           "regex": "requiredRegexN",
-          "message": "errorMessageN",
           "files": {
-            "ignore": "ignoreFilesRegexN",
-            "inspect": "inspectFilesRegexN"
+            "ignore": "ignoreFilesRegexA",
+            "inspect": "inspectFilesRegexZ"
           }
         }
       ]
@@ -103,11 +108,18 @@ Detailed configuration:
 }
 ```
 
+Files will be checked for:
+
+* The absence of `invalidRegex1` but if found it will be replaced with `newValue`.
+* The absence of `invalidRegexN` only in files with name not matching `ignoreFilesRegexN`, but if found `errorMessageN` will be shown.
+* The presence of `requiredRegex1` only in files with name matching `inspectFilesRegex1`, but if not found `errorMessage1` will be shown.
+* The presence of `requiredRegexN` only in files with name matching `inspectFilesRegexA` and not matching `ignoreFilesRegexZ`.
+
 __________________
 
 ## Goals
 
-The idea is to allow to create different eslint rules based on Regular Expressions in order to have some "freedom" to create quick ESLint custom rules.
+The idea is to allow the creation of different eslint rules based on Regular Expressions in order to have some "freedom" to create quick ESLint custom rules.
 
 ## Rules
 
@@ -115,6 +127,10 @@ Name                                                  | Fixable | Description
 ----------------------------------------------------- | ------- | -----------
 [`regex/invalid`](docs/rules/invalid-regex-rule.md)   | Yes     | checks that specified patterns are not found
 [`regex/required`](docs/rules/required-regex-rule.md) | No      | checks that specified patterns are found
+
+Each rule is a set of patterns.
+
+![Rules](readme/rules.svg)
 
 ### `regex/invalid`
 
@@ -168,7 +184,7 @@ const text = 'Hello "My Friend"'
 Both rule has two options:
 
 * **array** of patterns definitions to analyze. [REQUIRED]
-  * Each pattern definition can be 'Short' and/or 'Detailed'.
+  * Each pattern definition can be 'Short' or 'Detailed'.
 * a **string** representing the regular expression for ignoring files for all patterns. [OPTIONAL]
   * Slashes (`/`) are not required in the string, e.g. To get the following regex `/.*test\.js/` define the following string `".*test\.js"` when using `.eslintrc.js` or `".*test\\.js"` when using `.eslintrc.json` (backslash needs to de double in a json file).
 
@@ -186,8 +202,6 @@ Both rule has two options:
 #### Short pattern definition
 
 It is specified by just a regular expression `string`, i.e. `"regex"`
-
-* Slashes (`/`) are not required in the string, e.g. To get the following regex `/\bhttp:/` define the following string `"\bhttp:"` when using `.eslintrc.js` or `"\\bhttp:"` when using `.eslintrc.json` (backslash needs to de double in a json file).
 
 ```json
 {
@@ -207,6 +221,10 @@ It is specified by just a regular expression `string`, i.e. `"regex"`
   ]
 }
 ```
+
+> * Slashes (`/`) are not required in the string, e.g. To get the following regex `/\bhttp:/`:
+>   * when using `.eslintrc.js`, define the following string `"\bhttp:"`, or
+>   * when using `.eslintrc.json`, define `"\\bhttp:"` (backslash needs to be double in a json file)
 
 #### Detailed pattern definition
 
@@ -239,9 +257,10 @@ It is specified by an `object`, with the following fields:
 }
 ```
 
-> * `regex` is the only Required field. Slashes (`/`) are not required in the string, e.g. To get the following regex `/\bhttp:/`:
+> * `regex` is the **only** Required field.
+> * Slashes (`/`) are not required in the string, e.g. To get the following regex `/\bhttp:/`:
 >   * when using `.eslintrc.js`, define the following string `"\bhttp:"`, or
->   * when using `.eslintrc.json`, define `"\\bhttp:"` (backslash needs to de double in a json file).
+>   * when using `.eslintrc.json`, define `"\\bhttp:"` (backslash needs to be double in a json file).
 > * When `ignore` and `inspect` are present, `ignore` takes precedence.
 > * Global ignore file pattern, takes precedence over `files` patterns.
 
@@ -549,7 +568,9 @@ Since the **exact** word *return* is not present, this will allow the following 
     }
 ```
 
-#### Mixing definitions
+#### Mixing
+
+##### Mixing pattern types
 
 It is possible to use both type of definitions, 'Short pattern definition' with 'Detailed pattern definition', in the array of patterns.
 
@@ -587,6 +608,383 @@ It is possible to use both type of definitions, 'Short pattern definition' with 
 
 * `invalidRegex1` and `invalidRegex2` are 'Short pattern definition'.
 * `invalidRegex3` and `invalidRegexN` are 'Detailed pattern definition'.
+
+##### Mixing rules - Named Regex Rules
+
+Rule name can have suffix, this will allow to mix different error levels or create custom regex rules package.
+
+* *regex/invalid**Suffix***.
+* *regex/required**Suffix***.
+
+![Mixed Rules](readme/mixed-rules.svg)
+
+###### Mixing error levels
+
+It is possible to set different error level: `error`, `warn` and `off`. For this add a **different** suffix to the regex rule name of each definition.
+
+`.eslintrc.json`:
+
+```json
+{
+  "plugins": [
+    "regex"
+  ],
+  "rules": {
+    "regex/invalid": [
+      "error",
+      [
+        "invalidRegex1",
+        "invalidRegexN"
+      ]
+    ],
+    "regex/required": [
+      "error",
+      [
+        "requiredRegex1",
+        "requiredRegexN"
+      ]
+    ],
+    "regex/invalidSomeSuffix": [
+      "error", [
+        "invalidRegexA1",
+        "invalidRegexA2",
+        {
+          "regex": "invalidRegexA3",
+          "message": "errorMessage1",
+          "files": {
+            "inspect": "inspectFilesRegexA1"
+          }
+        },
+        {
+          "id": "regexIdN",
+          "regex": "invalidRegexN",
+          "files": {
+            "ignore": "ignoreFilesRegexAN"
+          }
+        }
+      ],
+    ],
+    "regex/invalid-another-suffix": [
+      "warn", [
+        "invalidRegexB1",
+        "invalidRegexB2",
+        {
+          "regex": "invalidRegexB3",
+          "message": "errorMessage1",
+          "files": {
+            "inspect": "inspectFilesRegex1"
+          }
+        },
+        {
+          "id": "regexIdN",
+          "regex": "invalidRegexBN",
+          "files": {
+            "ignore": "ignoreFilesRegexN"
+          }
+        }
+      ],
+    ],
+    "regex/invalid.another.suffix": [
+      "off", [
+        "invalidRegexC1",
+        "invalidRegexC2",
+        {
+          "regex": "invalidRegexB3",
+          "message": "errorMessage1",
+          "files": {
+            "inspect": "inspectFilesRegexC1"
+          }
+        },
+        {
+          "id": "regexIdN",
+          "regex": "invalidRegexBN",
+          "files": {
+            "ignore": "ignoreFilesRegexCN"
+          }
+        }
+      ],
+    ],
+    "regex/requiredSomeSuffix": [
+      "warn",
+      [
+        "requiredRegexA1",
+        "requiredRegexAN"
+      ]
+    ]
+  }
+}
+```
+
+* Rules with invalid patterns and `error` level: `regex/invalid` and `regex/invalidSomeSuffix`.
+* Rules with invalid patterns and `warn` level: `regex/invalid-another-suffix`.
+* Rules with invalid patterns and `off` level: `regex/invalid.another.suffix`.
+* Rules with required patterns and `error` level: `regex/required`.
+* Rules with required patterns and `warn` level: `regex/requiredSomeSuffix`.
+
+###### Custom set of regex rules
+
+Create a custom ESLint package and add the custom regex rules with a **"unique"** suffix for each regex rule name defined in the package, so it can be use with other package of regex rules or local regex rules.
+
+Custom package `index.js`:
+
+```javascript
+module.exports = {
+  configs: {
+    'someRegexRule1': {
+      plugins: [ 'regex' ],
+      rules: {
+        'regex/invalid-custom-890': [
+          error, [
+            {
+              regex: 'invalidRegexBN',
+              files: {
+                ignore: 'ignoreFilesRegexCN'
+              }
+            }
+          ]
+        ]
+      }
+    }
+  }
+}
+```
+
+* This custom package defines 1 rule named `regex/invalid-custom-890` with only 1 invalid pattern with `error` as a default error level.
+
+> For more information on how to create a custom ESLint package check [ESLint official documentation: Working with Plugins](https://eslint.org/docs/developer-guide/working-with-plugins)
+
+then use it,
+
+Some project `.eslintrc.json`:
+
+```json
+  { "extends": [ "plugin:the-eslint-plugin/someRegexRule1",
+```
+
+to change the default error level set by the package:
+
+```json
+  {
+    "extends": [ "plugin:the-eslint-plugin/someRegexRule1" ],
+    "rules": {
+      "regex/invalid-custom-890": "warn"
+
+```
+
+mixing with other regex rules:
+
+```json
+{
+  "extends": [ "plugin:the-eslint-plugin/someRegexRule1" ],
+  "rules": {
+    "regex/invalid-custom-890": "warn",
+    "regex/required": [
+      "error",
+      [
+        "requiredRegex1",
+        "requiredRegexN"
+      ]
+    ],
+    "regex/invalidSomeSuffix": [
+      "error", [
+        "invalidRegexA1",
+        "invalidRegexA2",
+        {
+          "regex": "invalidRegexA3",
+          "message": "errorMessage1",
+          "files": {
+            "inspect": "inspectFilesRegexA1"
+          }
+        },
+        {
+          "id": "regexIdN",
+          "regex": "invalidRegexN",
+          "files": {
+            "ignore": "ignoreFilesRegexAN"
+          }
+        }
+      ],
+    ],
+```
+
+##### Custom set of regex rules using js files
+
+Create a custom npm package using either with `json` or `js` files and add the custom regex rules.
+
+Custom package `index.js`:
+
+with complete rule definition:
+
+```javascript
+module.exports = {
+  regex: 'invalidRegexBN',
+  files: {
+    ignore: 'ignoreFilesRegexCN'
+  }
+}
+```
+
+or
+
+```javascript
+module.exports = {
+  regex: 'invalidRegexBN',
+}
+```
+
+or with only regex definition:
+
+```javascript
+module.exports = 'invalidRegexBN'
+```
+
+or with multiple complete rule definition:
+
+```javascript
+module.exports = {
+ ruleName1: {
+    regex: 'invalidRegex1',
+    files: {
+      ignore: 'ignoreFilesRegex1'
+    }
+  },
+  ruleNameN: {
+    regex: 'invalidRegexN',
+    files: {
+      ignore: 'ignoreFilesRegexN'
+    }
+  }
+}
+```
+
+or
+
+```javascript
+module.exports = {
+  ruleName1: {
+    regex: 'invalidRegex1',
+  },
+  ruleNameN: {
+    regex: 'invalidRegexN',
+  }
+}
+```
+
+or with multiple only regex definition:
+
+```javascript
+module.exports = {
+    ruleName1: 'invalidRegex1',
+    ruleNameN: 'invalidRegexN'
+}
+```
+
+or using `json` files:
+
+```json
+{
+  "regex": "invalidRegexBN",
+  "files": {
+    "ignore": "ignoreFilesRegexCN"
+  }
+}
+```
+
+or
+
+```json
+{
+  "regex": "invalidRegexBN",
+}
+```
+
+or
+
+```json
+{
+ "ruleName1": {
+    "regex": "invalidRegex1",
+    "files": {
+      "ignore": "ignoreFilesRegex1"
+    }
+  },
+  "ruleNameN": {
+    "regex": "invalidRegexN",
+    "files": {
+      "ignore": "ignoreFilesRegexN"
+    }
+  }
+}
+```
+
+or
+
+```json
+{
+  "ruleName1": {
+    "regex": "invalidRegex1",
+  },
+  "ruleNameN": {
+    "regex": "invalidRegexN",
+  }
+}
+```
+
+or
+
+```json
+{
+    "ruleName1": "invalidRegex1",
+    "ruleNameN": "invalidRegexN"
+}
+```
+
+> Different approaches can be defined, these are only a glance.
+> For more information on how to create a custom npm package check [Contributing packages to the registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry)
+
+Then use the custom package, here comes the "trick", must use eslintrc `js` files:
+
+Some project `.eslintrc.js`:
+
+```javascript
+  import * as SomeESLintSetOfRegexRulesPackage1 from 'the-custom-package1'
+  import * as SomeESLintSetOfRegexRulesPackage2 from 'the-custom-package2'
+
+  module.exports = {
+    plugins: ["regex"],
+    rules: {
+      "regex/invalid": [
+        'error', [
+          SomeESLintSetOfRegexRulesPackage1.ruleName1,
+          SomeESLintSetOfRegexRulesPackage1.ruleNameN,
+          SomeESLintSetOfRegexRulesPackage2.ruleName1,
+          SomeESLintSetOfRegexRulesPackage2.ruleNameN
+        ]
+      ],
+```
+
+or using Named Regex Rules to mix error levels:
+
+```javascript
+  import * as SomeESLintSetOfRegexRulesPackage1 from 'the-custom-package1'
+  import * as SomeESLintSetOfRegexRulesPackage2 from 'the-custom-package2'
+
+  module.exports = {
+    plugins: ["regex"],
+    rules: {
+      'regex/invalidError': [
+        'error', [
+          SomeESLintSetOfRegexRulesPackage1.ruleNameN,
+          SomeESLintSetOfRegexRulesPackage2.ruleName1
+        ]
+      ],
+      'regex/invalidWarn': [
+        'warn', [
+          SomeESLintSetOfRegexRulesPackage1.ruleName1,
+          SomeESLintSetOfRegexRulesPackage2.ruleNameN
+        ]
+      ]
+```
 
 #### String to Regular expression conversion
 

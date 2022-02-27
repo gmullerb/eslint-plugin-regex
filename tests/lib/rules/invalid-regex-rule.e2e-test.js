@@ -2,8 +2,6 @@
 //  Licensed under the MIT License (MIT), see LICENSE.txt
 const RuleTester = require('eslint').RuleTester
 
-const invalidRegexRule = require('../../../lib/rules/invalid-regex-rule')
-
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 }})
 
 const shouldNotFind = {
@@ -179,7 +177,49 @@ const shouldFoundAcrossMultilineInTheMiddleOfLineMultipleTimes = {
 
 ruleTester.run(
   'invalid',
-  invalidRegexRule, {
+  require('../../../lib').rules.invalid, {
+    valid: [
+      shouldNotFind,
+      shouldIgnoreFile,
+      shouldHandleEmptyFile
+    ],
+    invalid: [
+      shouldFound,
+      shouldFoundSame,
+      shouldFoundMultiline,
+      shouldFoundSameMultiline,
+      shouldFoundAcrossLines,
+      shouldFoundAcrossMultiline,
+      shouldFoundAcrossMultilineInTheMiddleOfLine,
+      shouldFoundAcrossMultilineInTheMiddleOfLineMultipleTimes
+    ]
+  }
+)
+
+ruleTester.run(
+  'invalid_extra',
+  require('../../../lib').rules.invalid_extra, {
+    valid: [
+      shouldNotFind,
+      shouldIgnoreFile,
+      shouldHandleEmptyFile
+    ],
+    invalid: [
+      shouldFound,
+      shouldFoundSame,
+      shouldFoundMultiline,
+      shouldFoundSameMultiline,
+      shouldFoundAcrossLines,
+      shouldFoundAcrossMultiline,
+      shouldFoundAcrossMultilineInTheMiddleOfLine,
+      shouldFoundAcrossMultilineInTheMiddleOfLineMultipleTimes
+    ]
+  }
+)
+
+ruleTester.run(
+  'invalid-extra',
+  require('../../../lib').rules['invalid-extra'], {
     valid: [
       shouldNotFind,
       shouldIgnoreFile,

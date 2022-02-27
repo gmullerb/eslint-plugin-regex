@@ -1,0 +1,7 @@
+{
+  "parser": "any-eslint-parser",
+  "rules": {
+    "eol-last": "error",
+    "no-tabs": "error"
+  }
+}

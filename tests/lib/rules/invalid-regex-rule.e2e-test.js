@@ -1,5 +1,8 @@
 //  Copyright (c) 2020 Gonzalo Müller Bravo.
 //  Licensed under the MIT License (MIT), see LICENSE.txt
+const { readFileSync } = require('fs')
+const { join } = require('path')
+
 const RuleTester = require('eslint').RuleTester
 
 const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 }})
@@ -56,6 +59,19 @@ const shouldFoundSame = {
     message: 'Invalid regular expression /invalid/gm found',
     line: 2,
     column: 18
+  }]
+}
+
+const shouldFoundOnlyOnce = {
+  code: 'var z = 1\nvar x = "==="',
+  filename: 'some-only-once.js',
+  options: [
+    ['"*==']
+  ],
+  errors: [{
+    message: 'Invalid regular expression /"*==/gm found',
+    line: 2,
+    column: 9
   }]
 }
 
@@ -175,6 +191,202 @@ const shouldFoundAcrossMultilineInTheMiddleOfLineMultipleTimes = {
   }]
 }
 
+const shouldFoundFileCase001Minified = {
+  code: readFileSync(join(__dirname, './case-001-minified.js'), 'utf8').toString(),
+  filename: 'case-001-minified.js',
+  options: [
+    ['[^!]={2,3}(?!=)']
+  ],
+  errors: [{
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 2305
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 2308
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 2930
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 2940
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 3120
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 3131
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 3141
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 3151
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 3386
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 3528
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4462
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4487
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4593
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4666
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4688
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4728
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4842
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4979
+  }]
+}
+
+const shouldFoundFileCase002Minified = {
+  code: readFileSync(join(__dirname, './case-002-minified.js'), 'utf8').toString(),
+  filename: 'case-002-minified.js',
+  options: [
+    ['[^!]={2,3}(?!=)']
+  ],
+  errors: [{
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 2305
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 2308
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 2930
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 2940
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 3120
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 3131
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 3141
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 3151
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 3386
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 3528
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4462
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4487
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4593
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4666
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4688
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4728
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4842
+  },
+  {
+    message: 'Invalid regular expression /[^!]={2,3}(?!=)/gm found',
+    line: 2,
+    column: 4979
+  }]
+}
+
 ruleTester.run(
   'invalid',
   require('../../../lib').rules.invalid, {
@@ -186,8 +398,11 @@ ruleTester.run(
     invalid: [
       shouldFound,
       shouldFoundSame,
+      shouldFoundOnlyOnce,
       shouldFoundMultiline,
       shouldFoundSameMultiline,
+      shouldFoundFileCase001Minified,
+      shouldFoundFileCase002Minified,
       shouldFoundAcrossLines,
       shouldFoundAcrossMultiline,
       shouldFoundAcrossMultilineInTheMiddleOfLine,
@@ -207,8 +422,11 @@ ruleTester.run(
     invalid: [
       shouldFound,
       shouldFoundSame,
+      shouldFoundOnlyOnce,
       shouldFoundMultiline,
       shouldFoundSameMultiline,
+      shouldFoundFileCase001Minified,
+      shouldFoundFileCase002Minified,
       shouldFoundAcrossLines,
       shouldFoundAcrossMultiline,
       shouldFoundAcrossMultilineInTheMiddleOfLine,
@@ -228,8 +446,11 @@ ruleTester.run(
     invalid: [
       shouldFound,
       shouldFoundSame,
+      shouldFoundOnlyOnce,
       shouldFoundMultiline,
       shouldFoundSameMultiline,
+      shouldFoundFileCase001Minified,
+      shouldFoundFileCase002Minified,
       shouldFoundAcrossLines,
       shouldFoundAcrossMultiline,
       shouldFoundAcrossMultilineInTheMiddleOfLine,

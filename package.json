@@ -64,9 +64,9 @@
   ],
   "scripts": {
     "lint": "npm run lint.common && npm run lint.source",
-    "lint.common": "echo ==== Lint Common ==== && eslint --config .eslintrc-any.json \"**/[\\.a-zA-Z]*.+(js|jsx|ts|tsx|json|yml|xml|sh|txt|md|svg|properties|gradle|java|cpp|c|html|css|groovy)\" \"**/.+(|gitignore|npmignore)\" --no-eslintrc --ignore-pattern \"build\"",
-    "lint.source": "echo ==== Lint Source Code ==== && eslint --color \"**/*.js\"",
-    "test.only": "node tests/tests.js && node tests/lib/rules/e2e-tests.js ",
+    "lint.common": "echo ==== Lint Common ==== && eslint --config .eslintrc-any.json \"**/[\\.a-zA-Z]*.+(js|jsx|ts|tsx|json|yml|xml|sh|txt|md|svg|properties|gradle|java|cpp|c|html|css|groovy)\" \"**/.+(|gitignore|npmignore)\" --no-eslintrc --ignore-pattern \"build\" --ignore-pattern \"tests/lib/rules/case-*.js\"",
+    "lint.source": "echo ==== Lint Source Code ==== && eslint --color \"**/*.js\" --ignore-pattern \"tests/lib/rules/case-*.js\"",
+    "test.only": "node tests/tests.js && node tests/lib/rules/e2e-tests.js",
     "test": "echo ==== Test With Coverage ==== && mkdir -p build && nyc npm run test.only",
     "prepack": "echo ==== Build Package ====",
     "check": "npm install && npm run lint && npm test && mkdir -p build && cd build && npm pack ../",
@@ -81,7 +81,7 @@
   },
   "devDependencies": {
     "any-eslint-parser": "^1.0.1",
-    "eslint": "^8.12.0",
+    "eslint": "^8.13.0",
     "eslint-plugin-base-style-config": "^2.8.1",
     "eslint-plugin-import": "^2.25.4",
     "jasmine": "^4.0.2",

@@ -2,6 +2,7 @@
   "rules": {
     "global-require": "off",
     "no-console": "off",
-    "no-throw-literal": "off"
+    "no-throw-literal": "off",
+    "max-lines": "off"
   }
 }

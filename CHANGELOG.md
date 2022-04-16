@@ -4,6 +4,7 @@
 
 * Closes #15, Allowing mixing different error level.
   * This bug required that the same rule can be defined with different error levels, that is not possible at the moment on eslint. Error level is not available at plugin level (as indicate by ESLint official documentation: "Keep in mind that the error level is not part of context.options, as the error level cannot be known or modified from inside a rule"). So I came up a different approach, which not only **allows to use "the same" rule with different error levels**, but also **allows Mixing custom set of regex rules**, this is useful for creating package/libraries/plugins with your own set of rules and sharing it with others.
+* Fixes #16, Unable to use both "ignore" and "inspect" inside "files" property.
 * Fixes an issue with remaining source calculation and minified files.
 * Improves project configuration.
   * Now uses [`any-eslint-parser`](https://www.npmjs.com/package/any-eslint-parser)

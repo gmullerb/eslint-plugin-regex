@@ -43,6 +43,20 @@ const shouldNotInspectedFile = {
   ]
 }
 
+const shouldHandleBothIgnoreInspectFile = {
+  code: 'const z = 1\nvar x = "invalid"',
+  filename: 'some.test.js',
+  options: [
+    [{
+      regex: 'invalid',
+      files: {
+        ignore: '.*test\.js',
+        inspect: '.*spec\.js'
+      }
+    }]
+  ]
+}
+
 const shouldFound = {
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
@@ -621,7 +635,8 @@ ruleTester.run(
     valid: [
       shouldNotFind,
       shouldIgnoreFile,
-      shouldNotInspectedFile
+      shouldNotInspectedFile,
+      shouldHandleBothIgnoreInspectFile
     ],
     invalid: [
       shouldFound,

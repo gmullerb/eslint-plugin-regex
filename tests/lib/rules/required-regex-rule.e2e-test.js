@@ -39,7 +39,7 @@ const shouldIgnoreFile = {
   ]
 }
 
-const shouldFound = {
+const shouldFind = {
   code: 'var z = 1\nvar x = "required"',
   filename: 'some.js',
   options: [
@@ -47,7 +47,7 @@ const shouldFound = {
   ]
 }
 
-const shouldFoundAcrossLines = {
+const shouldFindAcrossLines = {
   code: 'function z() {}\nconst \nrequired = "1"',
   filename: 'some.js',
   options: [
@@ -60,8 +60,8 @@ ruleTester.run(
   require('../../../lib').rules.required, {
     valid: [
       shouldIgnoreFile,
-      shouldFound,
-      shouldFoundAcrossLines
+      shouldFind,
+      shouldFindAcrossLines
     ],
     invalid: [
       shouldNotFind,
@@ -75,8 +75,8 @@ ruleTester.run(
   require('../../../lib').rules.required_extra, {
     valid: [
       shouldIgnoreFile,
-      shouldFound,
-      shouldFoundAcrossLines
+      shouldFind,
+      shouldFindAcrossLines
     ],
     invalid: [
       shouldNotFind,
@@ -90,8 +90,8 @@ ruleTester.run(
   require('../../../lib').rules['required-extra'], {
     valid: [
       shouldIgnoreFile,
-      shouldFound,
-      shouldFoundAcrossLines
+      shouldFind,
+      shouldFindAcrossLines
     ],
     invalid: [
       shouldNotFind,

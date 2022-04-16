@@ -61,7 +61,7 @@ const shouldHandleBothIgnoreInspectFile = {
   ]
 }
 
-const shouldFound = {
+const shouldFind = {
   code: 'var z = 1\nvar x = "required"',
   filename: 'some.js',
   options: [
@@ -71,7 +71,7 @@ const shouldFound = {
   ]
 }
 
-const shouldFoundAcrossLines = {
+const shouldFindAcrossLines = {
   code: 'function z() {}\nconst \nrequired = "1"',
   filename: 'some.js',
   options: [
@@ -86,13 +86,13 @@ ruleTester.run(
   requiredRegexRule, {
     valid: [
       shouldIgnoreFile,
-      shouldFound,
-      shouldFoundAcrossLines,
+      shouldFind,
+      shouldFindAcrossLines,
       shouldNotInspectFile,
       shouldHandleBothIgnoreInspectFile
     ],
     invalid: [
-      shouldNotFind,
+      shouldNotFind
     ]
   }
 )

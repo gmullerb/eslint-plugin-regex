@@ -30,7 +30,7 @@ const shouldIgnoreFile = {
   ]
 }
 
-const shouldNotInspectedFile = {
+const shouldNotInspectFile = {
   code: 'const z = 1\nvar x = "invalid"',
   filename: 'some.test.js',
   options: [
@@ -57,7 +57,7 @@ const shouldHandleBothIgnoreInspectFile = {
   ]
 }
 
-const shouldFound = {
+const shouldFind = {
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -72,7 +72,7 @@ const shouldFound = {
   }]
 }
 
-const shouldFoundWithId = {
+const shouldFindWithId = {
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -88,7 +88,7 @@ const shouldFoundWithId = {
   }]
 }
 
-const shouldFoundWithMessage = {
+const shouldFindWithMessage = {
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -105,7 +105,7 @@ const shouldFoundWithMessage = {
   }]
 }
 
-const shouldFoundSame = {
+const shouldFindSame = {
   code: 'var z = 1\nvar x = "invalid invalid"',
   filename: 'some.js',
   options: [
@@ -124,7 +124,7 @@ const shouldFoundSame = {
   }]
 }
 
-const shouldFoundMultiline = {
+const shouldFindMultiline = {
   code: 'var z = 1\nvar x = "invalid"\n  var y = "invalid"',
   filename: 'some.js',
   options: [
@@ -143,7 +143,7 @@ const shouldFoundMultiline = {
   }]
 }
 
-const shouldFoundSameMultiline = {
+const shouldFindSameMultiline = {
   code: 'var z = 1\nvar x = "invalid invalid"\n  var z = "invalid"',
   filename: 'some.js',
   options: [
@@ -166,7 +166,7 @@ const shouldFoundSameMultiline = {
   }]
 }
 
-const shouldFoundAcrossLines = {
+const shouldFindAcrossLines = {
   code: 'function z() {}\nvar \ninvalid = `1\n2`',
   filename: 'some.js',
   options: [
@@ -181,7 +181,7 @@ const shouldFoundAcrossLines = {
   }]
 }
 
-const shouldFoundAcrossMultiline = {
+const shouldFindAcrossMultiline = {
   code: 'function z() {}\nvar \ninvalid = `1\n2`\n\nvar \ninvalid2 = 1',
   filename: 'some.js',
   options: [
@@ -635,18 +635,18 @@ ruleTester.run(
     valid: [
       shouldNotFind,
       shouldIgnoreFile,
-      shouldNotInspectedFile,
+      shouldNotInspectFile,
       shouldHandleBothIgnoreInspectFile
     ],
     invalid: [
-      shouldFound,
-      shouldFoundWithId,
-      shouldFoundWithMessage,
-      shouldFoundSame,
-      shouldFoundMultiline,
-      shouldFoundSameMultiline,
-      shouldFoundAcrossLines,
-      shouldFoundAcrossMultiline,
+      shouldFind,
+      shouldFindWithId,
+      shouldFindWithMessage,
+      shouldFindSame,
+      shouldFindMultiline,
+      shouldFindSameMultiline,
+      shouldFindAcrossLines,
+      shouldFindAcrossMultiline,
       shouldReplace,
       shouldReplaceSeveralRegex,
       shouldReplaceWithFunction,

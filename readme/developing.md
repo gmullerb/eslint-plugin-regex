@@ -21,7 +21,7 @@ or
 git clone https://gitlab.com/gmullerb/eslint-plugin-regex
 ```
 
-(you can also fork or download the project)
+(you can also fork)
 
 ## Set up
 
@@ -31,7 +31,7 @@ Run:
 npm install
 ```
 
-It will install project dependencies, as [eslint](https://www.npmjs.com/package/eslint), [eslint-plugin-base-style-config](https://www.npmjs.com/package/eslint-plugin-base-style-config), [any-eslint-parser](https://www.npmjs.com/package/any-eslint-parser), etc.
+It will install project dependencies, as [eslint](https://www.npmjs.com/package/eslint), [any-eslint-parser](https://www.npmjs.com/package/any-eslint-parser), [eslint-plugin-base-style-config](https://www.npmjs.com/package/eslint-plugin-base-style-config), etc.
 
 > Recommendation: Immediately after installation, run `npm run check` to be sure that initial code is "ok".
 

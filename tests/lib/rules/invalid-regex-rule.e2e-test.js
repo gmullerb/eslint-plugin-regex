@@ -32,7 +32,7 @@ const shouldHandleEmptyFile = {
   ]
 }
 
-const shouldFound = {
+const shouldFind = {
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -45,7 +45,7 @@ const shouldFound = {
   }]
 }
 
-const shouldFoundSame = {
+const shouldFindSame = {
   code: 'var z = 1\nvar x = "invalid invalid"',
   filename: 'some.js',
   options: [
@@ -62,7 +62,7 @@ const shouldFoundSame = {
   }]
 }
 
-const shouldFoundOnlyOnce = {
+const shouldFindOnlyOnce = {
   code: 'var z = 1\nvar x = "==="',
   filename: 'some-only-once.js',
   options: [
@@ -75,7 +75,7 @@ const shouldFoundOnlyOnce = {
   }]
 }
 
-const shouldFoundMultiline = {
+const shouldFindMultiline = {
   code: 'var z = 1\nvar x = "invalid"\n  var y = "invalid"',
   filename: 'some.js',
   options: [
@@ -92,7 +92,7 @@ const shouldFoundMultiline = {
   }]
 }
 
-const shouldFoundSameMultiline = {
+const shouldFindSameMultiline = {
   code: 'var z = 1\nvar x = "invalid invalid"\n  var z = "invalid"',
   filename: 'some.js',
   options: [
@@ -113,7 +113,7 @@ const shouldFoundSameMultiline = {
   }]
 }
 
-const shouldFoundAcrossLines = {
+const shouldFindAcrossLines = {
   code: 'function z() {}\nvar \ninvalid = `1\n2`',
   filename: 'some.js',
   options: [
@@ -126,7 +126,7 @@ const shouldFoundAcrossLines = {
   }]
 }
 
-const shouldFoundAcrossMultiline = {
+const shouldFindAcrossMultiline = {
   code: 'function z() {}\nvar \ninvalid = `1\n2`\n\nvar \ninvalid2 = 1',
   filename: 'some.js',
   options: [
@@ -143,7 +143,7 @@ const shouldFoundAcrossMultiline = {
   }]
 }
 
-const shouldFoundAcrossMultilineInTheMiddleOfLine = {
+const shouldFindAcrossMultilineInTheMiddleOfLine = {
   code: 'function z() {}\n   var \ninvalid = `1\n2`\n\n     var \ninvalid2 = 1',
   filename: 'some.js',
   options: [
@@ -160,7 +160,7 @@ const shouldFoundAcrossMultilineInTheMiddleOfLine = {
   }]
 }
 
-const shouldFoundAcrossMultilineInTheMiddleOfLineMultipleTimes = {
+const shouldFindAcrossMultilineInTheMiddleOfLineMultipleTimes = {
   code: [
     'const one = `{',
     '    "TotalItems":5,',
@@ -191,7 +191,7 @@ const shouldFoundAcrossMultilineInTheMiddleOfLineMultipleTimes = {
   }]
 }
 
-const shouldFoundFileCase001Minified = {
+const shouldFindFileCase001Minified = {
   code: readFileSync(join(__dirname, './case-001-minified.js'), 'utf8').toString(),
   filename: 'case-001-minified.js',
   options: [
@@ -289,7 +289,7 @@ const shouldFoundFileCase001Minified = {
   }]
 }
 
-const shouldFoundFileCase002Minified = {
+const shouldFindFileCase002Minified = {
   code: readFileSync(join(__dirname, './case-002-minified.js'), 'utf8').toString(),
   filename: 'case-002-minified.js',
   options: [
@@ -396,17 +396,17 @@ ruleTester.run(
       shouldHandleEmptyFile
     ],
     invalid: [
-      shouldFound,
-      shouldFoundSame,
-      shouldFoundOnlyOnce,
-      shouldFoundMultiline,
-      shouldFoundSameMultiline,
-      shouldFoundFileCase001Minified,
-      shouldFoundFileCase002Minified,
-      shouldFoundAcrossLines,
-      shouldFoundAcrossMultiline,
-      shouldFoundAcrossMultilineInTheMiddleOfLine,
-      shouldFoundAcrossMultilineInTheMiddleOfLineMultipleTimes
+      shouldFind,
+      shouldFindSame,
+      shouldFindOnlyOnce,
+      shouldFindMultiline,
+      shouldFindSameMultiline,
+      shouldFindFileCase001Minified,
+      shouldFindFileCase002Minified,
+      shouldFindAcrossLines,
+      shouldFindAcrossMultiline,
+      shouldFindAcrossMultilineInTheMiddleOfLine,
+      shouldFindAcrossMultilineInTheMiddleOfLineMultipleTimes
     ]
   }
 )
@@ -420,17 +420,17 @@ ruleTester.run(
       shouldHandleEmptyFile
     ],
     invalid: [
-      shouldFound,
-      shouldFoundSame,
-      shouldFoundOnlyOnce,
-      shouldFoundMultiline,
-      shouldFoundSameMultiline,
-      shouldFoundFileCase001Minified,
-      shouldFoundFileCase002Minified,
-      shouldFoundAcrossLines,
-      shouldFoundAcrossMultiline,
-      shouldFoundAcrossMultilineInTheMiddleOfLine,
-      shouldFoundAcrossMultilineInTheMiddleOfLineMultipleTimes
+      shouldFind,
+      shouldFindSame,
+      shouldFindOnlyOnce,
+      shouldFindMultiline,
+      shouldFindSameMultiline,
+      shouldFindFileCase001Minified,
+      shouldFindFileCase002Minified,
+      shouldFindAcrossLines,
+      shouldFindAcrossMultiline,
+      shouldFindAcrossMultilineInTheMiddleOfLine,
+      shouldFindAcrossMultilineInTheMiddleOfLineMultipleTimes
     ]
   }
 )
@@ -444,17 +444,17 @@ ruleTester.run(
       shouldHandleEmptyFile
     ],
     invalid: [
-      shouldFound,
-      shouldFoundSame,
-      shouldFoundOnlyOnce,
-      shouldFoundMultiline,
-      shouldFoundSameMultiline,
-      shouldFoundFileCase001Minified,
-      shouldFoundFileCase002Minified,
-      shouldFoundAcrossLines,
-      shouldFoundAcrossMultiline,
-      shouldFoundAcrossMultilineInTheMiddleOfLine,
-      shouldFoundAcrossMultilineInTheMiddleOfLineMultipleTimes
+      shouldFind,
+      shouldFindSame,
+      shouldFindOnlyOnce,
+      shouldFindMultiline,
+      shouldFindSameMultiline,
+      shouldFindFileCase001Minified,
+      shouldFindFileCase002Minified,
+      shouldFindAcrossLines,
+      shouldFindAcrossMultiline,
+      shouldFindAcrossMultilineInTheMiddleOfLine,
+      shouldFindAcrossMultilineInTheMiddleOfLineMultipleTimes
     ]
   }
 )

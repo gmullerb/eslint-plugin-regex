@@ -51,15 +51,26 @@ describe('index tests', () => {
 
     for(const ruleName of rulesNames) {
       const testRuleName = ruleName.toUpperCase()
-      it(`should not regex rule name when equal to ${ruleName}`, () => {
+      it(`should not add regex rule name when equal to ${ruleName}`, () => {
         try {
           addRegexRuleName(testRuleName)
           fail(`Should not add "${ruleName}" name`)
         }
         catch(error) {
-          expect(error.toString()).toBe(`Error: "${testRuleName}" can not be used as eslint-plugin-regex rule name`)
+          expect(error.toString()).toBe(`Error: "${testRuleName}" already defined as eslint-plugin-regex rule name`)
         }
       })
     }
+
+    it('should fail adding same rule name more than once', () => {
+      addRegexRuleName('Same Required Rule Name')
+      try {
+        addRegexRuleName('Same Required Rule Name')
+        fail('Should not add "Same Required Rule Name" name')
+      }
+      catch(error) {
+        expect(error.toString()).toBe('Error: "Same Required Rule Name" already defined as eslint-plugin-regex rule name')
+      }
+    })
   })
 })

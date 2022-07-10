@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-regex",
   "description": "ESLint rules using Regular Expression",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "license": "MIT",
   "author": "Gonzalo Müller Bravo",
   "main": "lib/index.js",

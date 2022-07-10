@@ -1,5 +1,12 @@
 # ESLint Plugin Regex Change Log
 
+## 1.9.1 - July 2022
+
+* Fixes duplicate entries bug that happens when adding custom regex rule with same name.
+  * Message changed from `Error: "SomeRuleName" can not be used as eslint-plugin-regex rule name` to `Error: "SomeRuleName" already defined as eslint-plugin-regex rule name`.
+* Updates documentation.
+  * Changes background color to white for images.
+
 ## 1.9.0 - April 2022
 
 * Closes #15, Allowing mixing different error level.

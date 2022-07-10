@@ -28,7 +28,7 @@ __________________
   },
   "devDependencies": {
     "eslint": ">=4.0.0",
-    "eslint-plugin-regex": "1.9.0",
+    "eslint-plugin-regex": "1.9.1",
 ```
 
 2 . Configure eslint:
@@ -795,7 +795,7 @@ Creating and Using a Custom Set of regex rules **requires using `js` files**.
 
 ###### Named Regex Rules approach
 
-Rule name can be anything that includes `invalid`, `disuse`, `avoid`, `required` or `use`, ignoring letter case, and with the restrictions of predefined names (`invalid`, `disuse`, `avoid`, `invalid-warn`, `invalid-error`, `another-invalid`, `other-invalid`, `required`, `use`, `required-warn`, `required-error`, `another-required` and `other-required`), this will allow to mix different error levels or create custom regex rules package.
+A regex rule can be named with a custom name. The Rule name can be anything that **includes `invalid`, `disuse`, `avoid`, `required` or `use`**, ignoring letter case, and with the restrictions of predefined names (`invalid`, `disuse`, `avoid`, `invalid-warn`, `invalid-error`, `another-invalid`, `other-invalid`, `required`, `use`, `required-warn`, `required-error`, `another-required` and `other-required`).
 
 * `regex/*invalid*`, `regex/*disuse*`  or `regex/*avoid*` for invalid patterns.
 * `regex/*required*` or `regex/*use*` for required patterns.
@@ -813,26 +813,11 @@ addRegexRuleName('*invalid*')
 addRegexRuleName('*required*')
 ```
 
-An advantage of using Named Regex Rules is that shown error will be even more specific, e.g.:
-
-```javascript
-const { addRegexRuleName } = require('eslint-plugin-regex')
-
-addRegexRuleName('required-custom-896')
-```
-
-then, if an error happens, the output will be something similar to:
+* If the custom regex rule name is already defined, then an error will be shown:
 
 ```sh
-/path/to/some.js
-  1:1  error  Required regular expression /requiredRegex/gm not found in file  regex/required-custom-896
-```
-
-instead of
-
-```sh
-/path/to/some.js
-  1:1  error  Required regular expression /requiredRegex/gm not found in file  regex/required
+Error: Cannot read config file: /path/to/.eslintrc.js
+Error: "SomeRuleName" already defined as eslint-plugin-regex rule name
 ```
 
 ***Local Custom Regex rules***
@@ -953,6 +938,36 @@ mixing with other regex rules:
         }
       ],
     ],
+```
+
+***Advantages***
+
+* Using Named Regex rule name will allow to have a **set of different regex rule**:
+  * Each rule with totally different settings.
+    * Allow to mix different regular expressions.
+    * Allow to mix different error levels.
+    * etc.
+  * Easily create custom regex rules package.
+* When using Named Regex Rules, shown **errors will be even more specific**, e.g.:
+
+```javascript
+const { addRegexRuleName } = require('eslint-plugin-regex')
+
+addRegexRuleName('required-custom-896')
+```
+
+then, if an error happens, the output will be something similar to:
+
+```sh
+/path/to/some.js
+  1:1  error  Required regular expression /requiredRegex/gm not found in file  regex/required-custom-896
+```
+
+instead of
+
+```sh
+/path/to/some.js
+  1:1  error  Required regular expression /requiredRegex/gm not found in file  regex/required
 ```
 
 ###### Import/Export approach

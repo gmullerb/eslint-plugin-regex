@@ -12,6 +12,7 @@
   "root": true,
   "rules": {
     "global-require": "error",
+    "init-declarations": "off",
     "max-params": "off",
     "no-console": "error",
     "no-invalid-this": "error",
@@ -22,7 +23,6 @@
       "consistent": true
       }
     ],
-    "array-bracket-spacing": "off",
     "quotes":  [
       "error",
       "single"
@@ -30,6 +30,7 @@
     "semi": [
       "error",
       "never"
-    ]
+    ],
+    "valid-jsdoc": "off"
   }
 }

@@ -56,20 +56,35 @@ It is specified by just a regular expression `string`, i.e. `"regex"`
 
 It is specified by an `object`, with the following fields:
 
-* `regex`: A **required** `string` representing the **Regular expression to look for**.
-* `replacement` [1]:
-  * An optional `string` used to replace the invalid found pattern, or
-  * An optional `object` that establish how the invalid found pattern will be replaced:
-    * `function`: used to replace the invalid found pattern.
+* `regex`: A **required** `string` for `regex/required` and `regex/invalid` representing the **Regular expression to look for**. [REQUIRED]
+* `flags`: A combination of flags, `i`, `s` and/or `u`, to be used by the Regular Expression. [OPTIONAL]
+* `replacement` for `regex/invalid` [1]: [OPTIONAL]
+  * An optional `string` used to replace the **invalid** found pattern, or
+  * An optional `object` that establish how the **invalid** found pattern will be replaced:
+    * `function`: used to replace the **invalid** found pattern.
       * It will receive 3 parameters: `text`, `captured` and `$`, that can be used as desired.
       * It must return a `string` value, if not, return value will be ignored.
       * Its definition must be only the body of the function.
-      * [More Information](#definition-of-the-function-used-to-replace-invalid-found-pattern).
-* `id`: An optional `string` representing the **Pattern Id**.
-* `message`: An optional `string` specifying the **Message to be shown when an invalid `regex` is found**.
-* `files`: An optional `object` specifying which files to analyze:
+  * One must be defined, either the `string` or `function`.
+* `id`: An optional `string` representing the **Pattern Id**. [OPTIONAL]
+* `message`: An optional `string` specifying the **Message to be shown when an error happens** (invalid `regex` is found or required `regex` is not found). [OPTIONAL]
+* `files`: An optional `object` specifying which files to analyze: [OPTIONAL]
   * `ignore`: A `string` representing **Regular expression of the files to be ignored** when validating this specific pattern.
   * `inspect`:  A `string` representing **Regular expression of the files to be inspected** when validating this specific pattern.
+
+```json
+{
+  "id": "regexId",
+  "regex": "regex",
+  "flags": "isu",
+  "replacement": "replacementString",
+  "message": "errorMessage",
+  "files": {
+    "ignore": "ignoreFilesRegex",
+    "inspect": "inspectFilesRegex"
+  }
+}
+```
 
 > * `regex` is the only Required field. Slashes (`/`) are not required in the string, e.g. To get the following regex `/\bhttp:/`:
 >   * when using `.eslintrc.js`, define the following string `"\bhttp:"`, or

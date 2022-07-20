@@ -1,5 +1,22 @@
 # ESLint Plugin Regex Change Log
 
+## 1.10.0 - August 2022
+
+* Closes #19, Allows to add additional RegEx flags.
+* Fixes bug `RangeError: Maximum call stack size exceeded`.
+  * Replaces the recursive approach to a loop one.
+* Improves code.
+  * Clones `$`.
+  * Simplifies code.
+    * Improves code performance.
+    * Improves code coverage.
+  * Adds JSDoc to improve Learnability and Maintainability.
+* Improves project configuration.
+  * Renames `readme` folder to `.readme` in order to prevent it to be packed.
+  * Removes `.npmignore` (It doesn't work when using `files`: https://github.com/npm/npm/issues/4479)
+  * Updates CI configuration.
+* Updates Documentation.
+
 ## 1.9.1 - July 2022
 
 * Fixes duplicate entries bug that happens when adding custom regex rule with same name.

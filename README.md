@@ -28,7 +28,7 @@ __________________
   },
   "devDependencies": {
     "eslint": ">=4.0.0",
-    "eslint-plugin-regex": "1.9.1",
+    "eslint-plugin-regex": "1.10.0",
 ```
 
 2 . Configure eslint:
@@ -129,7 +129,7 @@ Name                                                  | Fixable | Description
 
 Each rule defines a set of patterns:
 
-![Rules](readme/rules.svg)
+![Rules](.readme/rules.svg)
 
 ### 📏 `regex/invalid`
 
@@ -205,19 +205,23 @@ Both rule has two options:
 ]
 ```
 
-#### The `string` representing the regular expression
+#### The *string* representing the regular expression
 
 Remember, Slashes (`/`) are not required in the string that defines the regex,
 
-e.g. To get the following regex `/\bhttp:/`:
+e.g. To get the following regex `/^(test|spec)$/`, define:
 
-* when using `.eslintrc.js`, define the following string `"\bhttp:"`, or
-* when using `.eslintrc.json`, define `"\\bhttp:"` (backslash needs to be double in a json file)
+* **`"^(test|spec)$"`**, when using `.eslintrc.js` or `.eslintrc.json`.
 
-e.g. To get the following regex `/.*test\.js/`:
+e.g. To get the following regex `/\bhttp:/`, define:
 
-* when using `.eslintrc.js`, define the following string `".*test\.js"`, or
-* when using `.eslintrc.json`, define `".*test\\.js"` (backslash needs to be double in a json file)
+* **`"\bhttp:"`**, when using `.eslintrc.js`, or
+* **`"\\bhttp:"`**, when using `.eslintrc.json`. (backslash needs to be double in a json file)
+
+e.g. To get the following regex `/.*test\.js/`, define:
+
+* **`".*test\.js"`**, when using `.eslintrc.js`, or
+* **`".*test\\.js"`**, when using `.eslintrc.json`. (backslash needs to be double in a json file)
 
 #### Short pattern definition
 
@@ -247,6 +251,7 @@ Each pattern is specified by just a **`string`** representing the regular expres
 It is specified by an `object`, with the following fields:
 
 * `regex`: A **required** `string` for `regex/required` and `regex/invalid` representing the **Regular expression to look for**. [REQUIRED]
+* `flags`: A combination of flags, `i`, `s` and/or `u`, to be used by the Regular Expression. [OPTIONAL]
 * `replacement` for `regex/invalid` [1]: [OPTIONAL]
   * An optional `string` used to replace the **invalid** found pattern, or
   * An optional `object` that establish how the **invalid** found pattern will be replaced:
@@ -265,6 +270,7 @@ It is specified by an `object`, with the following fields:
 {
   "id": "regexId",
   "regex": "regex",
+  "flags": "isu",
   "replacement": "replacementString",
   "message": "errorMessage",
   "files": {
@@ -635,6 +641,114 @@ Since the **exact** word *return* is not present, this will allow the following 
 }
 ```
 
+##### RegExp Flags
+
+The following flags can be add to the regex:
+
+* `i`: For case insensitive search.
+* `s`: To allow `.` to match newline characters.
+* `u`: To treat the regex as a sequence of unicode code points.
+
+To define the flags to be used, employ the field `flags` in the detailed pattern:
+
+* A combination of flags can be used, e.g. `"is"`.
+  * Order of flags is irrelevant, e.g. `"si"`.
+* It's case insensitive, e.g. `"iS"`, `"Is"` and `"IS"` are the same.
+* Invalid flags will be reported as an error by eslint.
+
+> By default, `"gm"` is always added by the engine (since It's required).
+
+e.g.
+
+Having the following detailed pattern:
+
+```json
+{
+  "regex": "invalid",
+  "flags": "i"
+}
+```
+
+`Invalid`, `inValid`, `INvalid` or `INVALID` will match.
+
+### String to Regular expression conversion
+
+Internally, each string from the array will be converted into a Regular Expression with `global` and `multiline` options, e.g.:
+
+`"someRegex"` will be transformed into `/someRegex/gm`
+
+> Remember that backslash needs to be double in strings of a json file, e.g. To get the following regex `/\bhttp:/` define the following string `"\\bhttp:"`.
+
+### Empty Meta characters
+
+For some special cases when using meta characters that may result in an empty match, e.g. `^`, eslint-plugin-regex will report only the first case found, and after that case is fixed, the following will be report, if present.
+
+e.g.
+
+```json
+{
+  "regex": "^(?!(?:(feature|fix|docs|config|refactor|revert|test).*[\\.:]$)|(\\*\\s\\w.*\\.$)|$)"
+}
+```
+
+`/path/to/some.js`:
+
+```text
+config(ALL):
+
+* Use eslint-plugin-regex for commit message linting
+* Use eslint-plugin-regex for commit message linting
+```
+
+When linting, `eslint-plugin-regex` will only report the first case:
+
+```bash
+/path/to/some.js
+ 3:1  error  Invalid regular expression /^(?!(?:(feature|fix|docs|config|refactor|revert|test).*[\\.:]$)|(\\*\\s\\w.*\\.$)|$)/gm found  regex/invalid
+```
+
+4:1  error will not be reported until 3:1 is fixed.
+
+> The issue is that having an empty match does not allow the regex engine to move forward.
+
+### Error report
+
+The 'Short pattern definition' errors are reported with the following structure:
+
+Given `someRegex`, the following message will be shown on error:
+
+```
+Invalid regular expression /someRegex/gm found
+```
+
+or
+
+```
+Required regular expression /someRegex/gm not found in file
+```
+
+The 'Detailed pattern definition' errors are reported with the following rules:
+
+A . If `message` is present then that **exact message is reported**.  
+B . If `id` is present then:
+
+Given `"id": "someRegexId"`, the following message will be shown on error:
+
+```
+Invalid regular expression 'someRegexId' found
+```
+
+or
+
+```
+Required regular expression 'someRegexId' not found in file
+```
+
+C . If neither `message` nor `id` is present then the 'Short pattern definition' error message is shown.
+
+> * `message` takes precedence over `id`.  
+> * Although `id` is a quick solution (and useful when creating and testing a rule), using `message` will give more information to the team about the issue.
+
 ### Mixing
 
 #### Mixing pattern types
@@ -800,7 +914,7 @@ A regex rule can be named with a custom name. The Rule name can be anything that
 * `regex/*invalid*`, `regex/*disuse*`  or `regex/*avoid*` for invalid patterns.
 * `regex/*required*` or `regex/*use*` for required patterns.
 
-![Mixed Rules](readme/mixed-rules.svg)
+![Mixed Rules](.readme/mixed-rules.svg)
 
 > In the name `invalid`, `disuse` and `avoid` will take precedence over `required` and `use`, e.g. If custom regex rule name has both `avoid` and `use` in the name, then the respective regex patterns will be consider invalid patterns.
 
@@ -1149,52 +1263,6 @@ or using synonyms to mix error levels:
       ]
 ```
 
-#### String to Regular expression conversion
-
-Internally, each string from the array will be converted into a Regular Expression with `global` and `multiline` options, e.g.:
-
-`"someRegex"` will be transformed into `/someRegex/gm`
-
-> Remember that backslash needs to be double in strings of a json file, e.g. To get the following regex `/\bhttp:/` define the following string `"\\bhttp:"`.
-
-#### Error report
-
-The 'Short pattern definition' errors are reported with the following structure:
-
-Given `someRegex`, the following message will be shown on error:
-
-```
-Invalid regular expression /someRegex/gm found
-```
-
-or
-
-```
-Required regular expression /someRegex/gm not found in file
-```
-
-The 'Detailed pattern definition' errors are reported with the following rules:
-
-A . If `message` is present then that **exact message is reported**.  
-B . If `id` is present then:
-
-Given `"id": "someRegexId"`, the following message will be shown on error:
-
-```
-Invalid regular expression 'someRegexId' found
-```
-
-or
-
-```
-Required regular expression 'someRegexId' not found in file
-```
-
-C . If neither `message` nor `id` is present then the 'Short pattern definition' error message is shown.
-
-> * `message` takes precedence over `id`.  
-> * Although `id` is a quick solution (and useful when creating and testing a rule), using `message` will give more information to the team about the issue.
-
 ### `regex/invalid` vs `regex/required`
 
 Both rule were design with *binary* approach:
@@ -1231,7 +1299,7 @@ __________________
 
 ## Extending/Developing
 
-[Developing](js/readme/developing.md)
+[Developing](js/.readme/developing.md)
 
 ## Contributing
 

@@ -44,10 +44,15 @@ test:
     untracked: true
     paths:
       - node_modules/
+  coverage: '/Branches.*?(\d+(?:\.\d+)?)%/'
   artifacts:
     when: always
     paths:
     - build/coverage/lcov-report/
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: build/coverage/cobertura-coverage.xml
 
 pages:
   stage: assemble

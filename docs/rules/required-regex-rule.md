@@ -57,12 +57,26 @@ It is specified by just a regular expression `string`, i.e. `"regex"`
 
 It is specified by an `object`, with the following fields:
 
-* `regex`: A **required** `string` representing the **Regular expression to look for**.
-* `id`: An optional `string` representing the **Pattern Id**.
-* `message`: An optional `string` specifying the **Message to be shown when a required `regex` is not found**.
-* `files`: An optional `object` specifying which files to analyze:
+* `regex`: A **required** `string` for `regex/required` and `regex/invalid` representing the **Regular expression to look for**. [REQUIRED]
+* `flags`: A combination of flags, `i`, `s` and/or `u`, to be used by the Regular Expression. [OPTIONAL]
+* `id`: An optional `string` representing the **Pattern Id**. [OPTIONAL]
+* `message`: An optional `string` specifying the **Message to be shown when an error happens** (invalid `regex` is found or required `regex` is not found). [OPTIONAL]
+* `files`: An optional `object` specifying which files to analyze: [OPTIONAL]
   * `ignore`: A `string` representing **Regular expression of the files to be ignored** when validating this specific pattern.
   * `inspect`:  A `string` representing **Regular expression of the files to be inspected** when validating this specific pattern.
+
+```json
+{
+  "id": "regexId",
+  "regex": "regex",
+  "flags": "isu",
+  "message": "errorMessage",
+  "files": {
+    "ignore": "ignoreFilesRegex",
+    "inspect": "inspectFilesRegex"
+  }
+}
+```
 
 > * `regex` is the only Required field. Slashes (`/`) are not required in the string, e.g. To get the following regex `/\bhttp:/`:
 >   * when using `.eslintrc.js`, define the following string `"\bhttp:"`, or

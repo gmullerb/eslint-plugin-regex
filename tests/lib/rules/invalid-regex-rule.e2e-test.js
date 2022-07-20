@@ -387,13 +387,70 @@ const shouldFindFileCase002Minified = {
   }]
 }
 
+const shouldWorkWhenRangeErrorMaximumCallStackSizeExceededCase003 = {
+  code: readFileSync(join(__dirname, './case-003-stack.txt'), 'utf8').toString(),
+  parser: join(__dirname, '../../../node_modules/any-eslint-parser'),
+  filename: 'some.txt',
+  options: [
+    ['^(?!(?:(feature|fix|docs|config|refactor|revert|test).*[\\.:]$)|(\\*\\s\\w.*\\.$)|$)']
+  ]
+}
+
+const shouldWorkWhenRangeErrorMaximumCallStackSizeExceededCase004 = {
+  code: readFileSync(join(__dirname, './case-004-stack.txt'), 'utf8').toString(),
+  parser: join(__dirname, '../../../node_modules/any-eslint-parser'),
+  filename: 'some.txt',
+  options: [
+    ['^(?!(?:(feature|fix|docs|config|refactor|revert|test).*[\\.:]$)|(\\*\\s\\w.*\\.$)|$)']
+  ],
+  errors: [{
+    message: 'Invalid regular expression /^(?!(?:(feature|fix|docs|config|refactor|revert|test).*[\\.:]$)|(\\*\\s\\w.*\\.$)|$)/gm found',
+    line: 3,
+    column: 1
+  }]
+}
+
+const shouldWorkWhenRangeErrorMaximumCallStackSizeExceededWillReportOnlyFirstErrorCase005 = {
+  code: readFileSync(join(__dirname, './case-005-stack.txt'), 'utf8').toString(),
+  parser: join(__dirname, '../../../node_modules/any-eslint-parser'),
+  filename: 'some.txt',
+  options: [
+    ['^(?!((feature|fix|docs|config|refactor|revert|test).*[\\.:]$)|(\\*\\s\\w.*\\.$)|$)']
+  ],
+  errors: [{
+    message: 'Invalid regular expression /^(?!((feature|fix|docs|config|refactor|revert|test).*[\\.:]$)|(\\*\\s\\w.*\\.$)|$)/gm found',
+    line: 3,
+    column: 1
+  }]
+  // Second Error will not be reported
+  // {
+  //   message: 'Invalid regular expression /^(?!((feature|fix|docs|config|refactor|revert|test).*[\\.:]$)|(\\*\\s\\w.*\\.$)|$)/gm found',
+  //   line: 4,
+  //   column: 1
+  // }
+}
+
+const shouldWorkWhenRangeErrorMaximumCallStackSizeExceededCase006 = {
+  code: readFileSync(join(__dirname, './case-002-minified.js'), 'utf8').toString(),
+  filename: 'some.js',
+  options: [
+    ['^(?!(?:(feature|fix|docs|config|refactor|revert|test).*[\\.:]$)|(\\*\\s\\w.*\\.$)|$)']
+  ],
+  errors: [{
+    message: 'Invalid regular expression /^(?!(?:(feature|fix|docs|config|refactor|revert|test).*[\\.:]$)|(\\*\\s\\w.*\\.$)|$)/gm found',
+    line: 2,
+    column: 1
+  }]
+}
+
 ruleTester.run(
   'invalid',
   require('../../../lib').rules.invalid, {
     valid: [
       shouldNotFind,
       shouldIgnoreFile,
-      shouldHandleEmptyFile
+      shouldHandleEmptyFile,
+      shouldWorkWhenRangeErrorMaximumCallStackSizeExceededCase003
     ],
     invalid: [
       shouldFind,
@@ -406,7 +463,10 @@ ruleTester.run(
       shouldFindAcrossLines,
       shouldFindAcrossMultiline,
       shouldFindAcrossMultilineInTheMiddleOfLine,
-      shouldFindAcrossMultilineInTheMiddleOfLineMultipleTimes
+      shouldFindAcrossMultilineInTheMiddleOfLineMultipleTimes,
+      shouldWorkWhenRangeErrorMaximumCallStackSizeExceededCase004,
+      shouldWorkWhenRangeErrorMaximumCallStackSizeExceededWillReportOnlyFirstErrorCase005,
+      shouldWorkWhenRangeErrorMaximumCallStackSizeExceededCase006
     ]
   }
 )
@@ -417,7 +477,8 @@ ruleTester.run(
     valid: [
       shouldNotFind,
       shouldIgnoreFile,
-      shouldHandleEmptyFile
+      shouldHandleEmptyFile,
+      shouldWorkWhenRangeErrorMaximumCallStackSizeExceededCase003
     ],
     invalid: [
       shouldFind,
@@ -430,7 +491,10 @@ ruleTester.run(
       shouldFindAcrossLines,
       shouldFindAcrossMultiline,
       shouldFindAcrossMultilineInTheMiddleOfLine,
-      shouldFindAcrossMultilineInTheMiddleOfLineMultipleTimes
+      shouldFindAcrossMultilineInTheMiddleOfLineMultipleTimes,
+      shouldWorkWhenRangeErrorMaximumCallStackSizeExceededCase004,
+      shouldWorkWhenRangeErrorMaximumCallStackSizeExceededWillReportOnlyFirstErrorCase005,
+      shouldWorkWhenRangeErrorMaximumCallStackSizeExceededCase006
     ]
   }
 )
@@ -441,7 +505,8 @@ ruleTester.run(
     valid: [
       shouldNotFind,
       shouldIgnoreFile,
-      shouldHandleEmptyFile
+      shouldHandleEmptyFile,
+      shouldWorkWhenRangeErrorMaximumCallStackSizeExceededCase003
     ],
     invalid: [
       shouldFind,
@@ -454,7 +519,10 @@ ruleTester.run(
       shouldFindAcrossLines,
       shouldFindAcrossMultiline,
       shouldFindAcrossMultilineInTheMiddleOfLine,
-      shouldFindAcrossMultilineInTheMiddleOfLineMultipleTimes
+      shouldFindAcrossMultilineInTheMiddleOfLineMultipleTimes,
+      shouldWorkWhenRangeErrorMaximumCallStackSizeExceededCase004,
+      shouldWorkWhenRangeErrorMaximumCallStackSizeExceededWillReportOnlyFirstErrorCase005,
+      shouldWorkWhenRangeErrorMaximumCallStackSizeExceededCase006
     ]
   }
 )

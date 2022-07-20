@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-regex",
   "description": "ESLint rules using Regular Expression",
-  "version": "1.9.1",
+  "version": "1.10.0",
   "license": "MIT",
   "author": "Gonzalo Müller Bravo",
   "main": "lib/index.js",
@@ -64,14 +64,16 @@
   ],
   "scripts": {
     "lint": "npm run lint.common && npm run lint.source",
-    "lint.common": "echo ==== Lint Common ==== && eslint --config .eslintrc-any.json \"**/[\\.a-zA-Z]*.+(js|jsx|ts|tsx|json|yml|xml|sh|txt|md|svg|properties|gradle|java|cpp|c|html|css|groovy)\" \"**/.+(|gitignore|npmignore)\" --no-eslintrc --ignore-pattern \"build\" --ignore-pattern \"tests/lib/rules/case-*.js\"",
-    "lint.source": "echo ==== Lint Source Code ==== && eslint --color \"**/*.js\" --ignore-pattern \"tests/lib/rules/case-*.js\"",
+    "lint.common": "npm run title --title=\"Lint Common\" -s && eslint --config .eslintrc-any.json \"**/[\\.a-zA-Z]*.+(js|jsx|ts|tsx|json|yml|xml|sh|txt|md|svg|properties|gradle|java|cpp|c|html|css|groovy)\" \"**/.+(|gitignore|npmignore)\" --no-eslintrc --ignore-pattern \"build\" --ignore-pattern \"tests/lib/rules/case-*.*\"",
+    "lint.source": "npm run title --title=\"Lint Source Code\" -s && eslint --color \"**/*.js\" --ignore-pattern \"tests/lib/rules/case-*.js\"",
     "test.only": "node tests/tests.js && node tests/lib/rules/e2e-tests.js",
-    "test": "echo ==== Test With Coverage ==== && mkdir -p build && nyc npm run test.only",
-    "prepack": "echo ==== Build Package ====",
-    "check": "npm install && npm run lint && npm test && mkdir -p build && cd build && npm pack ../",
+    "test": "npm run title --title=\"Test With Coverage\" -s && mkdir -p build && nyc npm run test.only",
+    "check": "npm run title --title=\"Install\" -s && npm install && npm run lint && npm test && mkdir -p build && cd build && npm pack ../",
+    "postcheck": "echo \"check OK\"",
     "check.all": "npm run check && npm audit",
-    "prepublishOnly": "npm run check"
+    "prepublishOnly": "npm run check",
+    "prepack": "npm run title --title=\"Build Package\" -s",
+    "title": "echo ==== \"\\033[1;;33m\"$npm_config_title\"\\033[0m\" ===="
   },
   "engines": {
     "node": ">=6.0.0"
@@ -82,7 +84,7 @@
   "devDependencies": {
     "any-eslint-parser": "^1.0.1",
     "eslint": "^8.13.0",
-    "eslint-plugin-base-style-config": "^2.8.1",
+    "eslint-plugin-base-style-config": "^2.9.2",
     "eslint-plugin-import": "^2.25.4",
     "jasmine": "^4.0.2",
     "nyc": "^15.1.0"
@@ -94,6 +96,7 @@
     "statements": 25,
     "reporter": [
       "lcov",
+      "cobertura",
       "text",
       "text-summary"
     ],

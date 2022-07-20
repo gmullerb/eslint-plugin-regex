@@ -1,0 +1,4 @@
+config(ALL):
+
+* Use eslint-plugin-regex for commit message linting
+* Use eslint-plugin-regex for commit message linting

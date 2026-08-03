@@ -1,13 +1,13 @@
-//  Copyright (c) 2020 Gonzalo Müller Bravo.
+//  Copyright (c) 2026-present Gonzalo Müller Bravo.
 //  Licensed under the MIT License (MIT), see LICENSE.txt
-/* eslint-disable max-lines */
+const { describe, it } = require('node:test')
+const expect = require('node:assert/strict')
 const RuleTester = require('eslint').RuleTester
 
-const invalidRegexRule = require('../../../lib/rules/invalid-regex-rule')
-
-const ruleTester = new RuleTester({ parserOptions: { ecmaVersion: 2015 }})
+const invalidRegexRule = require('../../lib/rules/invalid-regex-rule')
 
 const shouldNotFind = {
+  name: 'should not find invalid pattern in valid code',
   code: 'var z = 1\nvar x = "valid"',
   filename: 'some.js',
   options: [
@@ -18,6 +18,7 @@ const shouldNotFind = {
 }
 
 const shouldNotFindWithoutFlags = {
+  name: 'should not find invalid pattern without flags',
   code: 'var z = 1\nvar x = "inValid"',
   filename: 'some.js',
   options: [
@@ -28,6 +29,7 @@ const shouldNotFindWithoutFlags = {
 }
 
 const shouldNotFindWithInvalidFlags = {
+  name: 'should not validate with invalid flags',
   code: 'var z = 1\nvar x = "inValid"',
   filename: 'some.js',
   options: [
@@ -39,6 +41,7 @@ const shouldNotFindWithInvalidFlags = {
 }
 
 const shouldNotFindWithInvalidFlagsTooMany = {
+  name: 'should not validate with too many flags',
   code: 'var z = 1\nvar x = "inValid"',
   filename: 'some.js',
   options: [
@@ -50,6 +53,7 @@ const shouldNotFindWithInvalidFlagsTooMany = {
 }
 
 const shouldNotFindWithInvalidFlagsMixedWithValid = {
+  name: 'should not validate with flags mixed with valid ones',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -58,14 +62,10 @@ const shouldNotFindWithInvalidFlagsMixedWithValid = {
       flags: 'Es'
     }]
   ],
-  errors: [{
-    message: 'Invalid regular expression /1.var/gms found',
-    line: 1,
-    column: 9
-  }]
 }
 
 const shouldNotFindWithoutFlags2 = {
+  name: 'should not find wildcard pattern without flags',
   code: 'var z = 1\nvar x = "inValid"',
   filename: 'some.js',
   options: [
@@ -76,6 +76,7 @@ const shouldNotFindWithoutFlags2 = {
 }
 
 const shouldIgnoreFile = {
+  name: 'should ignore files matching the files ignore pattern',
   code: 'const z = 1\nvar x = "invalid"',
   filename: 'some.test.js',
   options: [
@@ -89,6 +90,7 @@ const shouldIgnoreFile = {
 }
 
 const shouldNotInspectFile = {
+  name: 'should not inspect files not matching the inspect pattern',
   code: 'const z = 1\nvar x = "invalid"',
   filename: 'some.test.js',
   options: [
@@ -102,6 +104,7 @@ const shouldNotInspectFile = {
 }
 
 const shouldHandleBothIgnoreInspectFile = {
+  name: 'should handle files matching both ignore and inspect patterns',
   code: 'const z = 1\nvar x = "invalid"',
   filename: 'some.test.js',
   options: [
@@ -116,6 +119,7 @@ const shouldHandleBothIgnoreInspectFile = {
 }
 
 const shouldFind = {
+  name: 'should find invalid pattern',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -131,6 +135,7 @@ const shouldFind = {
 }
 
 const shouldFindWithFlag = {
+  name: 'should find invalid pattern with case insensitive flag',
   code: 'var z = 1\nvar x = "inValid"',
   filename: 'some.js',
   options: [
@@ -147,6 +152,7 @@ const shouldFindWithFlag = {
 }
 
 const shouldFindWithFlag2 = {
+  name: 'should find wildcard pattern with dot all flag',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -163,6 +169,7 @@ const shouldFindWithFlag2 = {
 }
 
 const shouldFindWithMultipleFlags = {
+  name: 'should find invalid pattern with multiple flags',
   code: 'const A = 5;var z = A\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -179,6 +186,7 @@ const shouldFindWithMultipleFlags = {
 }
 
 const shouldFindWithDuplicatedFlags = {
+  name: 'should find invalid pattern with duplicated flags',
   code: 'const A = 5;var z = A\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -195,6 +203,7 @@ const shouldFindWithDuplicatedFlags = {
 }
 
 const shouldFindWithDuplicatedFlags2 = {
+  name: 'should find invalid pattern with duplicated flags in other order',
   code: 'const A = 5;var z = A\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -211,6 +220,7 @@ const shouldFindWithDuplicatedFlags2 = {
 }
 
 const shouldFindWithAlternatePathsNextLineCounterOverflow = {
+  name: 'should find invalid pattern with alternate paths and line counter overflow',
   code: 'const A = 5;var z = A\nvar x = "invalid"\nconst C = 5;var r = A;var q = "invalid"\nconst B = 5;var y = A\nvar w = "invalid";var a = A',
   filename: 'some.js',
   options: [
@@ -251,6 +261,7 @@ const shouldFindWithAlternatePathsNextLineCounterOverflow = {
 }
 
 const shouldFindWithUppercaseFlag = {
+  name: 'should find invalid pattern with uppercase flag',
   code: 'var z = 1\nvar x = "inValid"',
   filename: 'some.js',
   options: [
@@ -267,6 +278,7 @@ const shouldFindWithUppercaseFlag = {
 }
 
 const shouldFindWithId = {
+  name: 'should find invalid pattern reporting its id',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -283,6 +295,7 @@ const shouldFindWithId = {
 }
 
 const shouldFindWithMessage = {
+  name: 'should find invalid pattern reporting custom message',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -300,6 +313,7 @@ const shouldFindWithMessage = {
 }
 
 const shouldFindSame = {
+  name: 'should find same invalid pattern more than once on the same line',
   code: 'var z = 1\nvar x = "invalid invalid"',
   filename: 'some.js',
   options: [
@@ -319,6 +333,7 @@ const shouldFindSame = {
 }
 
 const shouldFindMultiline = {
+  name: 'should find invalid pattern in multiple lines',
   code: 'var z = 1\nvar x = "invalid"\n  var y = "invalid"',
   filename: 'some.js',
   options: [
@@ -338,6 +353,7 @@ const shouldFindMultiline = {
 }
 
 const shouldFindSameMultiline = {
+  name: 'should find same invalid pattern more than once in multiple lines',
   code: 'var z = 1\nvar x = "invalid invalid"\n  var z = "invalid"',
   filename: 'some.js',
   options: [
@@ -361,6 +377,7 @@ const shouldFindSameMultiline = {
 }
 
 const shouldFindAcrossLines = {
+  name: 'should find invalid pattern across lines',
   code: 'function z() {}\nvar \ninvalid = `1\n2`',
   filename: 'some.js',
   options: [
@@ -376,6 +393,7 @@ const shouldFindAcrossLines = {
 }
 
 const shouldFindAcrossLinesWithFlag = {
+  name: 'should find invalid pattern across lines with dot all flag',
   code: 'function z() {}\nvar \ninvalid = `1\n2`',
   filename: 'some.js',
   options: [
@@ -392,6 +410,7 @@ const shouldFindAcrossLinesWithFlag = {
 }
 
 const shouldFindAcrossMultiline = {
+  name: 'should find invalid pattern across multiple lines',
   code: 'function z() {}\nvar \ninvalid = `1\n2`\n\nvar \ninvalid2 = 1',
   filename: 'some.js',
   options: [
@@ -411,6 +430,7 @@ const shouldFindAcrossMultiline = {
 }
 
 const shouldReplace = {
+  name: 'should replace invalid pattern with replacement text',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -428,6 +448,7 @@ const shouldReplace = {
 }
 
 const shouldReplaceSeveralRegex = {
+  name: 'should replace multiple invalid patterns',
   code: 'var x = "invalid"\nvar z = 1',
   filename: 'some.js',
   options: [
@@ -456,6 +477,7 @@ const shouldReplaceSeveralRegex = {
 }
 
 const shouldReplaceWithFunction = {
+  name: 'should replace invalid pattern using replacement function',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -475,6 +497,7 @@ const shouldReplaceWithFunction = {
 }
 
 const shouldReplaceWithFunctionWithSomeProcessing = {
+  name: 'should replace invalid pattern using replacement function with processing',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -494,6 +517,7 @@ const shouldReplaceWithFunctionWithSomeProcessing = {
 }
 
 const shouldReplaceWithoutReturnFunction = {
+  name: 'should replace invalid pattern using expression replacement',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -513,6 +537,7 @@ const shouldReplaceWithoutReturnFunction = {
 }
 
 const shouldReplaceWithoutReturnFunctionAndReturnPresent = {
+  name: 'should replace invalid pattern using expression that contains the word return',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -532,6 +557,7 @@ const shouldReplaceWithoutReturnFunctionAndReturnPresent = {
 }
 
 const shouldNotReplaceWithInvalidFunctionCase01 = {
+  name: 'should not replace with invalid function returning undefined variable',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -547,10 +573,10 @@ const shouldNotReplaceWithInvalidFunctionCase01 = {
     line: 2,
     column: 10
   }],
-  output: 'var z = 1\nvar x = "invalid"'
 }
 
 const shouldNotReplaceWithInvalidFunctionCase02 = {
+  name: 'should not replace with invalid function throwing an exception',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -566,10 +592,10 @@ const shouldNotReplaceWithInvalidFunctionCase02 = {
     line: 2,
     column: 10
   }],
-  output: 'var z = 1\nvar x = "invalid"'
 }
 
 const shouldNotReplaceWithInvalidFunctionCase03 = {
+  name: 'should not replace with invalid function with syntax error',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -585,10 +611,10 @@ const shouldNotReplaceWithInvalidFunctionCase03 = {
     line: 2,
     column: 10
   }],
-  output: 'var z = 1\nvar x = "invalid"'
 }
 
 const shouldNotReplaceWithInvalidFunctionCase04 = {
+  name: 'should not replace with invalid function throwing exception in conditional',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -604,10 +630,10 @@ const shouldNotReplaceWithInvalidFunctionCase04 = {
     line: 2,
     column: 10
   }],
-  output: 'var z = 1\nvar x = "invalid"'
 }
 
 const shouldNotReplaceWithInvalidFunctionCase05 = {
+  name: 'should not replace with invalid function returning non string result',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -623,10 +649,10 @@ const shouldNotReplaceWithInvalidFunctionCase05 = {
     line: 2,
     column: 10
   }],
-  output: 'var z = 1\nvar x = "invalid"'
 }
 
 const shouldNotReplaceWithInvalidFunctionCase06 = {
+  name: 'should not replace with invalid expression returning non string result',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -642,10 +668,10 @@ const shouldNotReplaceWithInvalidFunctionCase06 = {
     line: 2,
     column: 10
   }],
-  output: 'var z = 1\nvar x = "invalid"'
 }
 
 const shouldNotReplaceWithInvalidFunctionCase07 = {
+  name: 'should not replace with invalid function returning a number',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -661,10 +687,10 @@ const shouldNotReplaceWithInvalidFunctionCase07 = {
     line: 2,
     column: 10
   }],
-  output: 'var z = 1\nvar x = "invalid"'
 }
 
 const shouldNotReplaceWithInvalidFunctionCase08InvalidReturnDetected = {
+  name: 'should not replace when return statement is detected in expression',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -680,10 +706,10 @@ const shouldNotReplaceWithInvalidFunctionCase08InvalidReturnDetected = {
     line: 2,
     column: 10
   }],
-  output: 'var z = 1\nvar x = "invalid"'
 }
 
 const shouldNotReplaceWithInvalidFunctionCase09NoStringFunction = {
+  name: 'should not validate when replacement function is not a string',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -702,6 +728,7 @@ const shouldNotReplaceWithInvalidFunctionCase09NoStringFunction = {
 }
 
 const shouldReplaceWithCapturingGroupsWithoutCaptured = {
+  name: 'should replace invalid pattern with capturing groups but no captured values',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -719,6 +746,7 @@ const shouldReplaceWithCapturingGroupsWithoutCaptured = {
 }
 
 const shouldReplaceWithFunctionWithCaptured = {
+  name: 'should replace invalid pattern using function with captured values',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -739,6 +767,7 @@ const shouldReplaceWithFunctionWithCaptured = {
 }
 
 const shouldReplaceWithFunctionWithCapturedWithLog = {
+  name: 'should replace invalid pattern using function with captured values and logging',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -747,8 +776,8 @@ const shouldReplaceWithFunctionWithCapturedWithLog = {
       message: 'don`t use inval',
       replacement: {
         /**
-         * This will generate a output to the console when testing
-         */
+        * This will generate a output to the console when testing
+        */
         function: 'console.log(text); console.log(captured[0]); return captured[0]'
       }
     }]
@@ -762,6 +791,7 @@ const shouldReplaceWithFunctionWithCapturedWithLog = {
 }
 
 const shouldReplaceWithFunctionWith$Text = {
+  name: 'should replace invalid pattern using function with dollar match',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -781,6 +811,7 @@ const shouldReplaceWithFunctionWith$Text = {
 }
 
 const shouldReplaceWithFunctionWith$TextWithoutReturn = {
+  name: 'should replace invalid pattern using expression with dollar match',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -800,6 +831,7 @@ const shouldReplaceWithFunctionWith$TextWithoutReturn = {
 }
 
 const shouldReplaceWithFunctionWith$Captured = {
+  name: 'should replace invalid pattern using function with dollar captured values',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -820,6 +852,7 @@ const shouldReplaceWithFunctionWith$Captured = {
 }
 
 const shouldReplaceWithFunctionWith$CapturedWithoutReturnUsingCommaOperator = {
+  name: 'should replace invalid pattern using comma operator expression with dollar captured values',
   code: 'var z = 1\nvar x = "invalid"',
   filename: 'some.js',
   options: [
@@ -839,135 +872,112 @@ const shouldReplaceWithFunctionWith$CapturedWithoutReturnUsingCommaOperator = {
   output: 'var z = 1\nvar x = "di"'
 }
 
-ruleTester.run(
-  'invalid',
-  invalidRegexRule, {
-    valid: [
-      shouldNotFind,
-      shouldNotFindWithoutFlags,
-      shouldNotFindWithoutFlags2,
-      shouldIgnoreFile,
-      shouldNotInspectFile,
-      shouldHandleBothIgnoreInspectFile
-    ],
-    invalid: [
-      shouldFind,
-      shouldFindWithFlag,
-      shouldFindWithFlag2,
-      shouldFindWithMultipleFlags,
-      shouldFindWithDuplicatedFlags,
-      shouldFindWithDuplicatedFlags2,
-      shouldFindWithUppercaseFlag,
-      shouldFindWithAlternatePathsNextLineCounterOverflow,
-      shouldFindWithId,
-      shouldFindWithMessage,
-      shouldFindSame,
-      shouldFindMultiline,
-      shouldFindSameMultiline,
-      shouldFindAcrossLines,
-      shouldFindAcrossLinesWithFlag,
-      shouldFindAcrossMultiline,
-      shouldReplace,
-      shouldReplaceSeveralRegex,
-      shouldReplaceWithFunction,
-      shouldReplaceWithFunctionWithSomeProcessing,
-      shouldReplaceWithoutReturnFunction,
-      shouldReplaceWithoutReturnFunctionAndReturnPresent,
-      shouldNotReplaceWithInvalidFunctionCase01,
-      shouldNotReplaceWithInvalidFunctionCase02,
-      shouldNotReplaceWithInvalidFunctionCase03,
-      shouldNotReplaceWithInvalidFunctionCase04,
-      shouldNotReplaceWithInvalidFunctionCase05,
-      shouldNotReplaceWithInvalidFunctionCase06,
-      shouldNotReplaceWithInvalidFunctionCase07,
-      shouldNotReplaceWithInvalidFunctionCase08InvalidReturnDetected,
-      shouldReplaceWithCapturingGroupsWithoutCaptured,
-      shouldReplaceWithFunctionWithCaptured,
-      shouldReplaceWithFunctionWithCapturedWithLog,
-      shouldReplaceWithFunctionWith$Text,
-      shouldReplaceWithFunctionWith$TextWithoutReturn,
-      shouldReplaceWithFunctionWith$Captured,
-      shouldReplaceWithFunctionWith$CapturedWithoutReturnUsingCommaOperator
-    ]
-  }
-)
 
-try {
+describe('Invalid Regex Rule - Detailed definition', () => {
+  const ruleTester = new RuleTester({ languageOptions: { ecmaVersion: 2019 }})
+
+  RuleTester.describe = describe
+  RuleTester.it = it
+
   ruleTester.run(
-    'invalid-schema',
+    'invalid',
     invalidRegexRule, {
       valid: [
-        shouldNotFind
+        shouldNotFind,
+        shouldNotFindWithoutFlags,
+        shouldNotFindWithoutFlags2,
+        shouldIgnoreFile,
+        shouldNotInspectFile,
+        shouldHandleBothIgnoreInspectFile
       ],
       invalid: [
-        shouldNotReplaceWithInvalidFunctionCase09NoStringFunction
+        shouldFind,
+        shouldFindWithFlag,
+        shouldFindWithFlag2,
+        shouldFindWithMultipleFlags,
+        shouldFindWithDuplicatedFlags,
+        shouldFindWithDuplicatedFlags2,
+        shouldFindWithUppercaseFlag,
+        shouldFindWithAlternatePathsNextLineCounterOverflow,
+        shouldFindWithId,
+        shouldFindWithMessage,
+        shouldFindSame,
+        shouldFindMultiline,
+        shouldFindSameMultiline,
+        shouldFindAcrossLines,
+        shouldFindAcrossLinesWithFlag,
+        shouldFindAcrossMultiline,
+        shouldReplace,
+        shouldReplaceSeveralRegex,
+        shouldReplaceWithFunction,
+        shouldReplaceWithFunctionWithSomeProcessing,
+        shouldReplaceWithoutReturnFunction,
+        shouldReplaceWithoutReturnFunctionAndReturnPresent,
+        shouldNotReplaceWithInvalidFunctionCase01,
+        shouldNotReplaceWithInvalidFunctionCase02,
+        shouldNotReplaceWithInvalidFunctionCase03,
+        shouldNotReplaceWithInvalidFunctionCase04,
+        shouldNotReplaceWithInvalidFunctionCase05,
+        shouldNotReplaceWithInvalidFunctionCase06,
+        shouldNotReplaceWithInvalidFunctionCase07,
+        shouldNotReplaceWithInvalidFunctionCase08InvalidReturnDetected,
+        shouldReplaceWithCapturingGroupsWithoutCaptured,
+        shouldReplaceWithFunctionWithCaptured,
+        shouldReplaceWithFunctionWithCapturedWithLog,
+        shouldReplaceWithFunctionWith$Text,
+        shouldReplaceWithFunctionWith$TextWithoutReturn,
+        shouldReplaceWithFunctionWith$Captured,
+        shouldReplaceWithFunctionWith$CapturedWithoutReturnUsingCommaOperator
       ]
     }
   )
-  throw 'non valid schema'
-}
-catch(error) {
-  if(error.toString().indexOf('Value {"function":2} should be string') === -1) {
-    throw 'non valid schema for replacement.function'
-  }
-}
+})
 
-try {
-  ruleTester.run(
-    'invalid-schema',
-    invalidRegexRule, {
-      valid: [
-        shouldNotFindWithInvalidFlags
-      ],
-      invalid: [
-        shouldFind
-      ]
-    }
-  )
-  throw 'non valid schema'
-}
-catch(error) {
-  if(error.toString().indexOf('Value "ER" should match pattern "^[isuISU]{1,3}$"') === -1) {
-    throw 'non valid schema for flags'
-  }
-}
+describe('Invalid Regex Rule - Invalid detailed definition', () => {
+  const ruleTester = new RuleTester({ languageOptions: { ecmaVersion: 2019 }})
 
-try {
-  ruleTester.run(
-    'invalid-schema',
-    invalidRegexRule, {
-      valid: [
-        shouldNotFindWithInvalidFlagsTooMany
-      ],
-      invalid: [
-        shouldFind
-      ]
-    }
-  )
-  throw 'non valid schema'
-}
-catch(error) {
-  if(error.toString().indexOf('Value "IsuI" should match pattern "^[isuISU]{1,3}$"') === -1) {
-    throw 'non valid schema for flags'
-  }
-}
+  RuleTester.describe = null
+  RuleTester.it = null
 
-try {
-  ruleTester.run(
-    'invalid-schema',
-    invalidRegexRule, {
-      valid: [
-        shouldNotFindWithInvalidFlagsMixedWithValid
-      ],
-      invalid: [
-        shouldFind
-      ]
-    }
-  )
-  throw 'non valid schema'
-}
-catch(error) {
-  if(error.toString().indexOf('Value "Es" should match pattern "^[isuISU]{1,3}$"') === -1) {
-    throw 'non valid schema for flags'
+  const expectSchemaError = (name, expectedMessage, { validCase, invalidCase }) => {
+    it(name, () => {
+      expect.throws(
+        () => {
+          ruleTester.run('invalid-schema', invalidRegexRule, {
+            valid: validCase ? [validCase] : [ shouldNotFind ],
+            invalid: invalidCase ? [invalidCase] : [shouldFind],
+          })
+        },
+        (error) => {
+          expect.match(error.message, expectedMessage)
+          return true
+        }
+      )
+    })
   }
-}
+
+  expectSchemaError(
+    'should reject replacement.function not containing a string',
+    /Value \{"function":2\} should be string/,
+    { invalidCase: shouldNotReplaceWithInvalidFunctionCase09NoStringFunction }
+  )
+
+  expectSchemaError(
+    'should reject invalid flags in schema',
+    /Value "ER" should match pattern "\^\[isuISU\]\{1,3\}\$"/,
+    { validCase: shouldNotFindWithInvalidFlags }
+  )
+
+  expectSchemaError(
+    'should reject flags longer than three characters',
+    /Value "IsuI" should match pattern "\^\[isuISU\]\{1,3\}\$"/,
+    { validCase: shouldNotFindWithInvalidFlagsTooMany }
+  )
+
+  expectSchemaError(
+    'should reject flags containing invalid characters',
+    /Value "Es" should match pattern "\^\[isuISU\]\{1,3\}\$"/,
+    { validCase: shouldNotFindWithInvalidFlagsMixedWithValid }
+  )
+})
+

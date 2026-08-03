@@ -1,5 +1,21 @@
 # ESLint Plugin Regex Change Log
 
+## 1.11.0 - August 2026
+
+- Migrate from legacy ESLint config to flat config (ESLint v10+)
+- Modernize ESLint context API in `create-utils` (uses context.filename and context.sourceCode with a fallback to deprecated getters for compatibility)
+- Modernize all source code to arrow functions with implicit returns across rules and utils
+- Simplify options parsing logic in `options-utils` (flag processing, pattern extraction)
+- Migrate from Jasmine to native test runner
+- Add comprehensive unit test suite using native `node:test` + `node:assert` for all rules and utilities
+- Add E2E test suite for flat config (ESLint v10+) using native test runner
+- Migrate legacy E2E tests to `legacy/` folder with eslint-legacy compatibility layer
+- Upgrade ESLint from v8.13.0 to v10.8.0 with all transitive dependencies
+- Added eslint-legacy as alias for backward-compatible testing
+- Migrate from `.eslintrc.json`, `.eslintrc-any.json` (legacy config) to eslint.config.mjs, eslint-any.config.mjs (flat config)
+- Modernize `package.json` scripts using `jko`
+- Add `scripts.js` - utility scripts enhancing `package.json`
+
 ## 1.10.0 - August 2022
 
 * Closes #19, Allows to add additional RegEx flags.

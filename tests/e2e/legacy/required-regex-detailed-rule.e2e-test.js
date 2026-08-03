@@ -1,6 +1,6 @@
-//  Copyright (c) 2020 Gonzalo Müller Bravo.
+//  Copyright (c) 2020-present Gonzalo Müller Bravo.
 //  Licensed under the MIT License (MIT), see LICENSE.txt
-const RuleTester = require('eslint').RuleTester
+const RuleTester = require('eslint-legacy').RuleTester
 
 const requiredRegexRule = require('../../../lib/rules/required-regex-rule')
 

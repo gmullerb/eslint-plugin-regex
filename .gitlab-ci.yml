@@ -1,67 +1,34 @@
 image: node:latest
 
-cache:
-  key: "${CI_COMMIT_SHA}"
-  untracked: true
-  paths:
-    - node_modules/
-
 stages:
-  - inception
-  - assess
-  - test
+  - one
   - assemble
 
-create-cache:
-  stage: inception
+only-one:
+  stage: one
   script:
     - npm install
-  cache:
-    key: "${CI_COMMIT_SHA}"
-    policy: push
-    untracked: true
-    paths:
-      - node_modules/
-
-assess:
-  stage: assess
-  script:
-    - npm run lint
-  cache:
-    key: "${CI_COMMIT_SHA}"
-    policy: pull
-    untracked: true
-    paths:
-      - node_modules/
-
-test:
-  stage: test
-  script:
-    - npm test
-  cache:
-    key: "${CI_COMMIT_SHA}"
-    policy: pull
-    untracked: true
-    paths:
-      - node_modules/
+    - npm install -g jko
+    - jko lint
+    - jko test
   coverage: '/Branches.*?(\d+(?:\.\d+)?)%/'
   artifacts:
     when: always
     paths:
-    - build/coverage/lcov-report/
+    - build/coverage/report/lcov-report/
     reports:
       coverage_report:
         coverage_format: cobertura
-        path: build/coverage/cobertura-coverage.xml
+        path: build/coverage/report/cobertura-coverage.xml
 
 pages:
   stage: assemble
   dependencies:
-    - test
+    - only-one
   script:
     - mkdir -p to_public
     - touch to_public/index.html
-    - mv build/coverage/lcov-report/ to_public/coverage
+    - mv build/coverage/report/lcov-report/ to_public/coverage
     - mv to_public public
   artifacts:
     paths:

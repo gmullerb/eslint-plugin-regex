@@ -1,14 +1,11 @@
-<p align="center">
-  <br/>
-  <a href="https://eslint-plugin-regex.github.io/"><img src="https://assets.gitlab-static.net/uploads/-/system/project/avatar/16770425/eslint-plugin-regex.png" alt=" "/></a>
-</p>
-
-<h1 align="center">ESLint rules using Regular Expressions</h1>
+<div align="center">
+  <img src="./.readme/eslint-plugin-regex.webp" alt="">
+  <h1>ESLint rules using Regular Expressions</h1>
+</div>
 
 [![eslint-plugin-regex](https://badgen.net/badge/homepage/eslint-plugin-regex/blue)](https://eslint-plugin-regex.github.io/)
 [![eslint-plugin-regex](https://badgen.net/badge/npm%20pack/eslint-plugin-regex/blue)](https://www.npmjs.com/package/eslint-plugin-regex)
-[![ ](https://badgen.net/npm/v/eslint-plugin-regex)](https://www.npmjs.com/package/eslint-plugin-regex)
-[![ ](https://badgen.net/npm/node/eslint-plugin-regex)](https://www.npmjs.com/package/eslint-plugin-regex)
+![NPM Version](https://img.shields.io/npm/v/eslint-plugin-regex)
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE.txt)
 [![ ](https://gitlab.com/gmullerb/eslint-plugin-regex/badges/master/coverage.svg)](https://gmullerb.gitlab.io/eslint-plugin-regex/coverage/index.html)
 [![Github repo](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com/gmullerb/eslint-plugin-regex)
@@ -1291,6 +1288,10 @@ __________________
 
 * [`"eslint": ">=4.0.0"`](https://www.npmjs.com/package/eslint).
 
+## License
+
+[MIT License](LICENSE.txt)
+
 __________________
 
 ## Evolution
@@ -1309,17 +1310,19 @@ __________________
 * [Propose changes or improvements](https://github.com/gmullerb/eslint-plugin-regex/issues).
 * [Report bugs](https://github.com/gmullerb/eslint-plugin-regex/issues).
 
-## License
+## Support
 
-[MIT License](LICENSE.txt)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2H21DLF1T)
+
+[![liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/gmullerb/donate)
 
 __________________
 
 ## Remember
 
-* Use code style verification tools => Encourages Best Practices, Efficiency, Readability and Learnability.
-* Code Review everything => Encourages Functional suitability, Performance Efficiency and Teamwork.
-* If viable, Start testing early => Encourages Reliability and Maintainability.
+* **Use code style verification tools** to promote Best Practices, Efficiency, Readability, and Learnability.
+* **Code-review everything** to foster Functional suitability, Performance Efficiency, and Teamwork.
+* If viable, **start testing early** to ensure Reliability and Maintainability.
 
 ## Additional words
 

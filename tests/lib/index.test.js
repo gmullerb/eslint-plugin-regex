@@ -1,49 +1,53 @@
-//  Copyright (c) 2022 Gonzalo Müller Bravo.
+//  Copyright (c) 2022-present Gonzalo Müller Bravo.
 //  Licensed under the MIT License (MIT), see LICENSE.txt
+const expect = require('node:assert')
+
+const { describe, it } = require('node:test')
+
 const { addRegexRuleName, rules } = require('../../lib')
 const invalidRegexRule = require('../../lib/rules/invalid-regex-rule.js')
 const requiredRegexRule = require('../../lib/rules/required-regex-rule.js')
 
-describe('index tests', () => {
+describe('addRegexRuleName tests', () => {
   it('should add invalid regex rule name when valid', () => {
     addRegexRuleName('someInvalid')
 
-    expect(Object.keys(rules).find(rule => rule === 'someInvalid')).toBe('someInvalid')
-    expect(rules.someInvalid).toBe(invalidRegexRule)
+    expect.equal(Object.keys(rules).find(rule => rule === 'someInvalid'), 'someInvalid')
+    expect.equal(rules.someInvalid, invalidRegexRule)
   })
 
   it('should add invalid disuse regex rule name when valid', () => {
     addRegexRuleName('some-disuse')
 
-    expect(Object.keys(rules).find(rule => rule === 'some-disuse')).toBe('some-disuse')
-    expect(rules['some-disuse']).toBe(invalidRegexRule)
+    expect.equal(Object.keys(rules).find(rule => rule === 'some-disuse'), 'some-disuse')
+    expect.equal(rules['some-disuse'], invalidRegexRule)
   })
 
   it('should add invalid avoid regex rule name when valid', () => {
     addRegexRuleName('avoid some')
 
-    expect(Object.keys(rules).find(rule => rule === 'avoid some')).toBe('avoid some')
-    expect(rules['avoid some']).toBe(invalidRegexRule)
+    expect.equal(Object.keys(rules).find(rule => rule === 'avoid some'), 'avoid some')
+    expect.equal(rules['avoid some'], invalidRegexRule)
   })
 
   it('should add required regex rule name when valid', () => {
     addRegexRuleName('someREQUIRED')
 
-    expect(Object.keys(rules).find(rule => rule === 'someREQUIRED')).toBe('someREQUIRED')
-    expect(rules.someREQUIRED).toBe(requiredRegexRule)
+    expect.equal(Object.keys(rules).find(rule => rule === 'someREQUIRED'), 'someREQUIRED')
+    expect.equal(rules.someREQUIRED, requiredRegexRule)
   })
 
   it('should add required use regex rule name when valid', () => {
     addRegexRuleName('someUSE')
 
-    expect(Object.keys(rules).find(rule => rule === 'someUSE')).toBe('someUSE')
-    expect(rules.someUSE).toBe(requiredRegexRule)
+    expect.equal(Object.keys(rules).find(rule => rule === 'someUSE'), 'someUSE')
+    expect.equal(rules.someUSE, requiredRegexRule)
   })
 
   it('should not add regex rule name when invalid name', () => {
     addRegexRuleName('some')
 
-    expect(Object.keys(rules).find(rule => rule === 'some')).toBeUndefined()
+    expect.equal(Object.keys(rules).find(rule => rule === 'some'), undefined)
   })
 
   describe('invalid rule names', () => {
@@ -54,10 +58,10 @@ describe('index tests', () => {
       it(`should not add regex rule name when equal to ${ruleName}`, () => {
         try {
           addRegexRuleName(testRuleName)
-          fail(`Should not add "${ruleName}" name`)
+          expect.fail(`Should not add "${ruleName}" name`)
         }
         catch(error) {
-          expect(error.toString()).toBe(`Error: "${testRuleName}" already defined as eslint-plugin-regex rule name`)
+          expect.equal(error.toString(), `Error: "${testRuleName}" already defined as eslint-plugin-regex rule name`)
         }
       })
     }
@@ -66,10 +70,10 @@ describe('index tests', () => {
       addRegexRuleName('Same Required Rule Name')
       try {
         addRegexRuleName('Same Required Rule Name')
-        fail('Should not add "Same Required Rule Name" name')
+        expect.fail('Should not add "Same Required Rule Name" name')
       }
       catch(error) {
-        expect(error.toString()).toBe('Error: "Same Required Rule Name" already defined as eslint-plugin-regex rule name')
+        expect.equal(error.toString(), 'Error: "Same Required Rule Name" already defined as eslint-plugin-regex rule name')
       }
     })
   })

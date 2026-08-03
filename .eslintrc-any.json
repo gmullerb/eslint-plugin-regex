@@ -1,5 +1,0 @@
-{
-  "extends": [ "plugin:base-style-config/common-rules" ],
-  "plugins": [ "base-style-config" ],
-  "parser": "any-eslint-parser"
-}
